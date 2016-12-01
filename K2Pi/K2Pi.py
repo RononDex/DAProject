@@ -43,9 +43,10 @@ for i in range(len(x0)):
     P_K_plus.append(np.array([E_K_plus,p_plus*(-x0[i]),p_plus*(-y0[i]),p_plus*(-z0[i])]))
 P_K_plus=np.array(P_K_plus)
 """
+#E_K0,p_0 muss noch durch viel ueberlegen bestimmt werden
 
-E_K0 =807
-p_0= 301
+E_K0 = 0
+p_0= 0
 
 E_K_plus = 0
 p_plus= 0 
@@ -53,6 +54,7 @@ p_plus= 0
 P_K0=np.array([E_K0,p_0*x0,p_0*y0,p_0*z0])
 P_K_plus=np.array([E_K_plus,p_plus*(-x0),p_plus*(-y0),p_plus*(-z0)])
 
+#random Werte
 b=0.8
 g=5/3.
 boost=np.array([[g,0,0,b*g],[0,1,0,0],[0,0,1,0],[b*g,0,0,g]])
