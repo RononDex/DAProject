@@ -65,6 +65,10 @@ P_lab0=np.dot(boost,P_K0.T)
 """
 Zerfall von K
 
+a = Distanz zum Downastream Detektor
+tau = Zerfallsstrecke des Kaons
+ez = Einheitsvektor in Z-Richtung
+d = Abstand zur Z-Achse auf Detektor
 
 """
 
