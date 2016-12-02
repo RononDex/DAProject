@@ -162,13 +162,12 @@ plt.show()
 
 A = np.linspace(0,500,500)
 
-'''
+
 SR = []
 for i in A:
     SR.append(successrate(E_K_0, E_K_plus, p, b, g, i, tau, n))
-print(SR)
-'''
+
     
 plt.figure()
-plt.plot(A,successrate(E_K_0, E_K_plus, p, b, g, A, tau, n))
+plt.plot(A,SR)
 plt.show()
