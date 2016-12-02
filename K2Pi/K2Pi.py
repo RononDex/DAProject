@@ -92,6 +92,7 @@ d_plus =(a-z_length) * np.tan(GetAngleBetweenVectors(p_plus,ez))
 print(d_0)
 print(d_plus)
 
+
 '''Das Skript in sauberer Form:'''
 
 #functions:
@@ -137,4 +138,15 @@ tau = 132.97                    #Mittlere Zerfallsstrecke von K+
 
 #Auswertung:
 
-print(SimulateDecay(E_K_0, E_K_plus, p, b, g, a, tau))
+n = 1009
+Pi_0 = np.zeros(n)
+Pi_plus = np.zeros(n)
+for i in range(n):
+    decay = SimulateDecay(E_K_0, E_K_plus, p, b, g, a, tau)
+    Pi_0[i] = decay[0]
+    Pi_plus[i] = decay[1]
+    
+plt.figure()
+plt.plot(range(n),Pi_0,'r')
+plt.plot(range(n),Pi_plus,'g')
+plt.show()
