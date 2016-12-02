@@ -123,12 +123,23 @@ def SimulateDecay(E_K_0, E_K_plus, p, b, g, a, tau):
         return [0,0]
     else:
         ez= np.array([0,0,1])
-
         d_0 = float((a-z_length) * np.tan(GetAngleBetweenVectors(P_lab_0[1:],ez)))
-        d_plus = float((a-z_length) * np.tan(GetAngleBetweenVectors(P_lab_plus[1:],ez)))
-    
+        d_plus = float((a-z_length) * np.tan(GetAngleBetweenVectors(P_lab_plus[1:],ez)))  
         return [d_0, d_plus]
 
+def successrate(E_K_0, E_K_plus, p, b, g, a, tau, n):
+    Pi_0 = np.zeros(n)
+    Pi_plus = np.zeros(n)
+    for i in range(n):
+        decay = SimulateDecay(E_K_0, E_K_plus, p, b, g, a, tau)
+        Pi_0[i] = decay[0]
+        Pi_plus[i] = decay[1]
+    success = 0
+    for i in range(n):
+        if Pi_0[i] and Pi_plus[i] <= 2:
+            success += 1
+    return success/n
+    
 #parameters:
 
 E_K_0 = 245.563588 #MeV         #Energie der neutrale Pionen in K+ system
@@ -138,20 +149,26 @@ b = 0.99997833784995            #Betafaktor
 g = 151.92756392754             #Gammafaktor
 a = 280                         #Totale Distanz zum Detektor
 tau = 132.97                    #Mittlere Zerfallsstrecke von K+
+n = 1000                        #Anzahl Teilchen
 
 #Auswertung:
-
-n = 1009
-Pi_0 = np.zeros(n)
-Pi_plus = np.zeros(n)
-for i in range(n):
-    decay = SimulateDecay(E_K_0, E_K_plus, p, b, g, a, tau)
-    Pi_0[i] = decay[0]
-    Pi_plus[i] = decay[1]
-
-    
+'''
 plt.figure()
 plt.plot(range(n),Pi_0,'r')
 plt.plot(range(n),Pi_plus,'g')
 plt.plot([0,n],[2,2],'k:')
+plt.show()
+'''
+
+A = np.linspace(0,500,500)
+
+'''
+SR = []
+for i in A:
+    SR.append(successrate(E_K_0, E_K_plus, p, b, g, i, tau, n))
+print(SR)
+'''
+    
+plt.figure()
+plt.plot(A,successrate(E_K_0, E_K_plus, p, b, g, A, tau, n))
 plt.show()
