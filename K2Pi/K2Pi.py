@@ -43,7 +43,7 @@ def successrate(E_K_0, E_K_plus, p, b, g, a, tau, n):               #Zaehlung de
         Pi_plus[i] = decay[1]
     success = 0
     for i in range(n):
-        if Pi_0[i] and Pi_plus[i] <= 2:
+        if Pi_0[i] <= 2 and Pi_plus[i] <= 2:
             success += 1
     return success/n
     
