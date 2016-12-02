@@ -51,7 +51,7 @@ p_0= 205.14091 #MeV/c
 E_K_plus = 248.118174 #MeV
 p_plus= p_0 
 
-P_K0=np.array([E_K0,p_0*x0,p_0*y0,p_0*z0])
+P_K_0=np.array([E_K0,p_0*x0,p_0*y0,p_0*z0])
 P_K_plus=np.array([E_K_plus,p_plus*(-x0),p_plus*(-y0),p_plus*(-z0)])
 
 #Manus Werte
@@ -59,7 +59,8 @@ b = 0.99997833784995
 g = 151.92756392754
 boost=np.array([[g,0,0,b*g],[0,1,0,0],[0,0,1,0],[b*g,0,0,g]])
 
-P_lab0=np.dot(boost,P_K0.T)
+P_lab_0 = np.dot(boost,P_K_0.T)
+P_lab_plus = np.dot(boost,P_K_plus.T)
 
 
 """
@@ -82,8 +83,11 @@ def GetAngleBetweenVectors(X, Y):
     y=np.linalg.norm(Y)
     return np.arccos(np.dot(X,Y)/(x*y))
 
-P = P_lab0[1:]
+p_0 = P_lab_0[1:]
+p_plus = P_lab_plus[1:]
 ez= np.array([0,0,1])
 
-d =(a-z_length) * np.tan(GetAngleBetweenVectors(P,ez))
-print(d)
+d_0 =(a-z_length) * np.tan(GetAngleBetweenVectors(p_0,ez))
+d_plus =(a-z_length) * np.tan(GetAngleBetweenVectors(p_plus,ez))
+print(d_0)
+print(d_plus)
