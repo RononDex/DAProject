@@ -57,7 +57,7 @@ def RunExperiment(E_K_0, E_K_plus, p, b, g, a_range, tau, n):       #Plot und op
     for i in range(len(A)):
         if SR[i]==SR_max:
             a_opt = A[i]
-    return print(a_opt), plt.figure(), plt.plot(A,SR)
+    return a_opt, SR, plt.plot(A,SR)
     
 #Parameter:
 
@@ -72,5 +72,9 @@ a_range = [0,500,500]           #Anfangspunkt, Endpunkt, Anzahl Schritte der Pos
 
 #Auswertung:
 
-RunExperiment(E_K_0, E_K_plus, p, b, g, a_range, tau, n)
+plt.figure()
+a_opt, SR, f = RunExperiment(E_K_0, E_K_plus, p, b, g, a_range, tau, n)
+with open("data.txt", "w") as fh:       #Ausgabe der Messdaten in Datei
+	fh.write(str(SR))
 plt.show()
+print('Optimale Position: ', a_opt)
