@@ -68,3 +68,4 @@ a_range = [0,500,500]           #Anfangspunkt, Endpunkt, Anzahl Schritte der Pos
 #Auswertung:
 
 RunExperiment(E_K_0, E_K_plus, p, b, g, a_range, tau, n)
+plt.show()
