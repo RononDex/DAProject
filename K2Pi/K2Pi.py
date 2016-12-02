@@ -51,8 +51,13 @@ def RunExperiment(E_K_0, E_K_plus, p, b, g, a_range, tau, n):       #Plot und op
     A = np.linspace(a_range[0],a_range[1],a_range[2])
     SR = []
     for i in A:
-        SR.append(successrate(E_K_0, E_K_plus, p, b, g, i, tau, n))  
-    return plt.figure(), plt.plot(A,SR)
+        SR.append(successrate(E_K_0, E_K_plus, p, b, g, i, tau, n))
+    SR_max = max(SR)
+    a_opt = 0
+    for i in range(len(A)):
+        if SR[i]==SR_max:
+            a_opt = A[i]
+    return print(a_opt), plt.figure(), plt.plot(A,SR)
     
 #Parameter:
 
