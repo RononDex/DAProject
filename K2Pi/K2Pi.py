@@ -119,12 +119,15 @@ def SimulateDecay(E_K_0, E_K_plus, p, b, g, a, tau):
     P_lab_plus = np.dot(LorentzBoost(b,g),P_K_plus.T)
     
     z_length= np.array(stats.expon.rvs(loc=0, scale=tau, size=1))
-    ez= np.array([0,0,1])
+    if float(z_length) >= a:
+        return [0,0]
+    else:
+        ez= np.array([0,0,1])
 
-    d_0 = float((a-z_length) * np.tan(GetAngleBetweenVectors(P_lab_0[1:],ez)))
-    d_plus = float((a-z_length) * np.tan(GetAngleBetweenVectors(P_lab_plus[1:],ez)))
+        d_0 = float((a-z_length) * np.tan(GetAngleBetweenVectors(P_lab_0[1:],ez)))
+        d_plus = float((a-z_length) * np.tan(GetAngleBetweenVectors(P_lab_plus[1:],ez)))
     
-    return d_0, d_plus
+        return [d_0, d_plus]
 
 #parameters:
 
@@ -145,8 +148,10 @@ for i in range(n):
     decay = SimulateDecay(E_K_0, E_K_plus, p, b, g, a, tau)
     Pi_0[i] = decay[0]
     Pi_plus[i] = decay[1]
+
     
 plt.figure()
 plt.plot(range(n),Pi_0,'r')
 plt.plot(range(n),Pi_plus,'g')
+plt.plot([0,n],[2,2],'k:')
 plt.show()
