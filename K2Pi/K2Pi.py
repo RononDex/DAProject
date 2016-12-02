@@ -1,5 +1,6 @@
 import numpy as np
 import scipy.stats as stats
+import matplotlib.pyplot as plt
 
 
 """
@@ -97,37 +98,37 @@ print(d_plus)
 
 #functions:
 
-def GetAngleBetweenVectors(X, Y):
+def GetAngleBetweenVectors(X, Y):                                   #nicht orientierter Winkel zwischen zwei Vektoren
     x=np.linalg.norm(X)
     y=np.linalg.norm(Y)
     return np.arccos(np.dot(X,Y)/(x*y))
 
-def LorentzBoost(b,g):
+def LorentzBoost(b,g):                                              #Lorentz-Boost, b = Beta-Faktor, g = Gamma-Faktor
     return np.array([[g,0,0,b*g],[0,1,0,0],[0,0,1,0],[b*g,0,0,g]])
 
 def SimulateDecay(E_K_0, E_K_plus, p, b, g, a, tau):
-    theta = np.array(stats.uniform.rvs(scale=np.pi, size=1))
-    phi = np.array(stats.uniform.rvs(scale=2*np.pi, size=1))
-    x0= np.sin(theta)*np.cos(phi)
-    y0= np.sin(theta)*np.sin(phi)
+    theta = np.array(stats.uniform.rvs(scale=np.pi, size=1))        #gleichverteilt zwischen 0 und Pi
+    phi = np.array(stats.uniform.rvs(scale=2*np.pi, size=1))        #gleichverteilt zwischen 0 und 2 Pi
+    x0= np.sin(theta)*np.cos(phi)                                   
+    y0= np.sin(theta)*np.sin(phi)                                   #kartesische Koordinaten
     z0= np.cos(theta)
     
-    P_K_0 = np.array([E_K0,p*x0,p*y0,p*z0])
+    P_K_0 = np.array([E_K_0,p*x0,p*y0,p*z0])                        #4-Vektoren im K+-Frame
     P_K_plus = np.array([E_K_plus,p*(-x0),p*(-y0),p*(-z0)])
 
-    P_lab_0 = np.dot(LorentzBoost(b,g),P_K_0.T)
+    P_lab_0 = np.dot(LorentzBoost(b,g),P_K_0.T)                     #4-Vektoren im Lab-Frame
     P_lab_plus = np.dot(LorentzBoost(b,g),P_K_plus.T)
     
-    z_length= np.array(stats.expon.rvs(loc=0, scale=tau, size=1))
-    if float(z_length) >= a:
+    z_length= np.array(stats.expon.rvs(loc=0, scale=tau, size=1))   #Ortsvektor des K+-Zerfalls
+    if float(z_length) >= a:                                        #Aussortieren der K+, die hinter Detektor zerfallen
         return [0,0]
     else:
-        ez= np.array([0,0,1])
+        ez= np.array([0,0,1])                                       #Einheitsvektor in Z-Richtung
         d_0 = float((a-z_length) * np.tan(GetAngleBetweenVectors(P_lab_0[1:],ez)))
         d_plus = float((a-z_length) * np.tan(GetAngleBetweenVectors(P_lab_plus[1:],ez)))  
-        return [d_0, d_plus]
+        return [d_0, d_plus]                                        #Output: Abstand von Mittelpunkt des Detektors von Pi_0 und Pi_plus
 
-def successrate(E_K_0, E_K_plus, p, b, g, a, tau, n):
+def successrate(E_K_0, E_K_plus, p, b, g, a, tau, n):               #Zaehlung der Erfolge im Verhaeltnis zu Anzahl Kaonen
     Pi_0 = np.zeros(n)
     Pi_plus = np.zeros(n)
     for i in range(n):
