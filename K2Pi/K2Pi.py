@@ -63,7 +63,7 @@ def RunExperiment(E_K_0, E_K_plus, p, b, g, a_range, tau, n):       #Plot und op
 
 E_K_0 = 245.563588 #MeV         #Energie der neutrale Pionen in K+ system
 E_K_plus = 248.118174 #MeV      #Energie der positiven Pionen in K+ system
-p = 205.14091 #MeV/c            #Impulsbetrag der Pionen (der selbe für beide)
+p = 205.14091 #MeV/c            #Impulsbetrag der Pionen (der selbe fuer beide)
 b = 0.99997833784995            #Betafaktor
 g = 151.92756392754             #Gammafaktor
 tau = 132.97                    #Mittlere Zerfallsstrecke von K+
