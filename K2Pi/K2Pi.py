@@ -12,7 +12,7 @@ def GetAngleBetweenVectors(X, Y):                                   #nicht orien
 def LorentzBoost(b,g):                                              #Lorentz-Boost, b = Beta-Faktor, g = Gamma-Faktor
     return np.array([[g,0,0,b*g],[0,1,0,0],[0,0,1,0],[b*g,0,0,g]])
 
-def SimulateDecay(E_K_0, E_K_plus, p, b, g, a, tau):
+def SimulateOneDecay(E_K_0, E_K_plus, p, b, g, tau):                #Erzeugung eines einzelnen Pion-Paares im Lab-frame
     theta = np.array(stats.uniform.rvs(scale=np.pi, size=1))        #gleichverteilt zwischen 0 und Pi
     phi = np.array(stats.uniform.rvs(scale=2*np.pi, size=1))        #gleichverteilt zwischen 0 und 2 Pi
     x0= np.sin(theta)*np.cos(phi)                                   
@@ -26,32 +26,42 @@ def SimulateDecay(E_K_0, E_K_plus, p, b, g, a, tau):
     P_lab_plus = np.dot(LorentzBoost(b,g),P_K_plus.T)
     
     z_length= np.array(stats.expon.rvs(loc=0, scale=tau, size=1))   #Ortsvektor des K+-Zerfalls
+    return P_lab_0, P_lab_plus, z_length
+
+def SimulateNDecays(E_K_0, E_K_plus, p, b, g, tau, n):              #Erzeugung von n Zerfaellen:
+    P_lab_0 = []
+    P_lab_plus = []
+    z_length = []
+    for i in range(n):
+        decay = SimulateOneDecay(E_K_0, E_K_plus, p, b, g, tau)
+        P_lab_0.append(decay[0])
+        P_lab_plus.append(decay[1])
+        z_length.append(decay[2])
+    return P_lab_0, P_lab_plus, z_length
+
+def HitDistance(P_lab_0, P_lab_plus, z_length, a):                  #Abstand zu Mittelpunkt des Detektors von Pi_0 und Pi_plus
+    ez= np.array([0,0,1])                                           #Einheitsvektor in Z-Richtung
     if float(z_length) >= a:                                        #Aussortieren der K+, die hinter Detektor zerfallen
         return [100,100]
     else:
-        ez= np.array([0,0,1])                                       #Einheitsvektor in Z-Richtung
         d_0 = float((a-z_length) * np.tan(GetAngleBetweenVectors(P_lab_0[1:],ez)))
         d_plus = float((a-z_length) * np.tan(GetAngleBetweenVectors(P_lab_plus[1:],ez)))  
-        return [d_0, d_plus]                                        #Output: Abstand von Mittelpunkt des Detektors von Pi_0 und Pi_plus
+        return [d_0, d_plus]                                       
 
-def successrate(E_K_0, E_K_plus, p, b, g, a, tau, n):               #Zaehlung der Erfolge im Verhaeltnis zu Anzahl K+
-    Pi_0 = np.zeros(n)
-    Pi_plus = np.zeros(n)
-    for i in range(n):
-        decay = SimulateDecay(E_K_0, E_K_plus, p, b, g, a, tau)
-        Pi_0[i] = decay[0]
-        Pi_plus[i] = decay[1]
+def successrate(P_lab_0, P_lab_plus, z_length, a, n):               #Zaehlung der Erfolge einer Messung im Verhaeltnis zu Anzahl K+
     success = 0
     for i in range(n):
-        if Pi_0[i] <= 2 and Pi_plus[i] <= 2:
+        if HitDistance(P_lab_0[i], P_lab_plus[i], z_length[i], a)[0] <= 2 and HitDistance(P_lab_0[i], P_lab_plus[i], z_length[i], a)[1] <= 2:
             success += 1
     return success/n
 
-def RunExperiment(E_K_0, E_K_plus, p, b, g, a_range, tau, n):       #Plot und optimale Position des Detektors
+def RunExperiment(E_K_0, E_K_plus, p, b, g, a_range, tau, n):       #optimale Position des Detektors und Plot
     A = np.linspace(a_range[0],a_range[1],a_range[2])
+    decay = SimulateNDecays(E_K_0, E_K_plus, p, b, g, tau, n)
+    P_lab_0, P_lab_plus, z_length = decay[0], decay[1], decay[2]
     SR = []
     for i in A:
-        SR.append(successrate(E_K_0, E_K_plus, p, b, g, i, tau, n))
+        SR.append(successrate(P_lab_0, P_lab_plus, z_length, i, n))
     SR_max = max(SR)
     a_opt = 0
     for i in range(len(A)):
@@ -67,8 +77,8 @@ p = 205.14091 #MeV/c            #Impulsbetrag der Pionen (der selbe fuer beide)
 b = 0.99997833784995            #Betafaktor
 g = 151.92756392754             #Gammafaktor
 tau = 132.97                    #Mittlere Zerfallsstrecke von K+
-n = 30                          #Anzahl K+
-a_range = [0,500,500]           #Anfangspunkt, Endpunkt, Anzahl Schritte der Positionsbestimmung des Detektors
+n = 200                         #Anzahl K+
+a_range = [0,500,500]           #Anfangspunkt, Endpunkt, Anzahl Messungen
 
 #Auswertung:
 
