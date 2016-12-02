@@ -27,7 +27,7 @@ def SimulateDecay(E_K_0, E_K_plus, p, b, g, a, tau):
     
     z_length= np.array(stats.expon.rvs(loc=0, scale=tau, size=1))   #Ortsvektor des K+-Zerfalls
     if float(z_length) >= a:                                        #Aussortieren der K+, die hinter Detektor zerfallen
-        return [0,0]
+        return [100,100]
     else:
         ez= np.array([0,0,1])                                       #Einheitsvektor in Z-Richtung
         d_0 = float((a-z_length) * np.tan(GetAngleBetweenVectors(P_lab_0[1:],ez)))
