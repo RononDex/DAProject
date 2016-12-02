@@ -34,7 +34,7 @@ def SimulateDecay(E_K_0, E_K_plus, p, b, g, a, tau):
         d_plus = float((a-z_length) * np.tan(GetAngleBetweenVectors(P_lab_plus[1:],ez)))  
         return [d_0, d_plus]                                        #Output: Abstand von Mittelpunkt des Detektors von Pi_0 und Pi_plus
 
-def successrate(E_K_0, E_K_plus, p, b, g, a, tau, n):               #Zaehlung der Erfolge im Verhaeltnis zu Anzahl Kaonen
+def successrate(E_K_0, E_K_plus, p, b, g, a, tau, n):               #Zaehlung der Erfolge im Verhaeltnis zu Anzahl K+
     Pi_0 = np.zeros(n)
     Pi_plus = np.zeros(n)
     for i in range(n):
@@ -46,6 +46,13 @@ def successrate(E_K_0, E_K_plus, p, b, g, a, tau, n):               #Zaehlung de
         if Pi_0[i] <= 2 and Pi_plus[i] <= 2:
             success += 1
     return success/n
+
+def RunExperiment(E_K_0, E_K_plus, p, b, g, a_range, tau, n):       #Plot und optimale Position des Detektors
+    A = np.linspace(a_range[0],a_range[1],a_range[2])
+    SR = []
+    for i in A:
+        SR.append(successrate(E_K_0, E_K_plus, p, b, g, i, tau, n))  
+    return plt.figure(), plt.plot(A,SR)
     
 #Parameter:
 
@@ -54,27 +61,10 @@ E_K_plus = 248.118174 #MeV      #Energie der positiven Pionen in K+ system
 p = 205.14091 #MeV/c            #Impulsbetrag der Pionen (der selbe für beide)
 b = 0.99997833784995            #Betafaktor
 g = 151.92756392754             #Gammafaktor
-a = 280                         #Totale Distanz zum Detektor
 tau = 132.97                    #Mittlere Zerfallsstrecke von K+
-n = 1000                        #Anzahl Teilchen
+n = 30                          #Anzahl K+
+a_range = [0,500,500]           #Anfangspunkt, Endpunkt, Anzahl Schritte der Positionsbestimmung des Detektors
 
 #Auswertung:
-'''
-plt.figure()
-plt.plot(range(n),Pi_0,'r')
-plt.plot(range(n),Pi_plus,'g')
-plt.plot([0,n],[2,2],'k:')
-plt.show()
-'''
 
-A = np.linspace(0,500,500)
-
-
-SR = []
-for i in A:
-    SR.append(successrate(E_K_0, E_K_plus, p, b, g, i, tau, n))
-
-    
-plt.figure()
-plt.plot(A,SR)
-plt.show()
+RunExperiment(E_K_0, E_K_plus, p, b, g, a_range, tau, n)
