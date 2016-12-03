@@ -68,6 +68,22 @@ def RunExperiment(E_K_0, E_K_plus, p, b, g, a_range, tau, n):       #optimale Po
         if SR[i]==SR_max:
             a_opt = A[i]
     return a_opt, SR, plt.plot(A,SR)
+
+
+def SimulateKDecayPoint(sx, sy, tau):                               #Funktion gibt Zerfallspunkt eines Kaons aus (x,y,z) und Vektor in Flugrichtung
+    alpha = np.array(stats.norm.rvs(loc=0, scale=sx, size=1))       #Erzeugen eines zufälligen Streuwinkels in x Richtung 
+    beta = np.array(stats.norm.rvs(loc=0, scale=sy, size=1))        #Erzeugen eines zufälligen Streuwinkels in y Richtung
+    theta = np.arccos(np.cos(alpha)*np.cos(beta))                   #Berechne theta und phi aus Streuwinkeln (Wäre froh würde jemand Nachrechnen) 
+    phi = np.arctan(np.tan(beta)/np.sin(alpha))                         
+    vlen= np.array(stats.expon.rvs(loc=0, scale=tau, size=1))       #Erzeuge Flugläng eines Kaons (Exponentialverteilt, mittlere Flugweite tau) 
+    x0= np.sin(theta)*np.cos(phi)*vlen                                 
+    y0= np.sin(theta)*np.sin(phi)*vlen                              #kartesische Koordinaten
+    z0= np.cos(theta)*vlen
+    dp= np.array([[x0],[y0],[z0]]).T                                #Zerfallspunkt (dp=decaypoint) 
+    ev = dp/vlen                                                    #Normierter Vektor in Flugrichtung 
+    return  dp, ev
+
+
     
 #Parameter:
 
@@ -79,6 +95,8 @@ g = 151.92756392754             #Gammafaktor
 tau = 132.97                    #Mittlere Zerfallsstrecke von K+
 n = 200                         #Anzahl K+
 a_range = [0,500,500]           #Anfangspunkt, Endpunkt, Anzahl Messungen
+sx = 1*10**-3			#Standardabweichung xWinkel (alpha)
+sy = 1*10**-3			#Standardabweichung yWinkel (beta)
 
 #Auswertung:
 
