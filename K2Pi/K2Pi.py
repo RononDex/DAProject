@@ -55,7 +55,18 @@ def successrate(P_lab_0, P_lab_plus, z_length, a, n):               #Zaehlung de
             success += 1
     return success/n
 
-def RunExperiment(E_K_0, E_K_plus, p, b, g, a_range, tau, n):       #optimale Position des Detektors und Plot
+def GraficEvaluation(a_opt, SR_max, A, SR):			    #huebsche Darstellung der Messwerte
+    plt.figure()
+    plt.plot(A,SR)
+    plt.xlim(xmin=a_range[0],xmax=a_range[1])
+    plt.ylim(ymin=0, ymax=1)
+    plt.plot([a_range[0],a_range[1]], [max(SR),max(SR)],'k:')
+    plt.plot([a_opt,a_opt], [0,1],'k:')
+    plt.xlabel('detector position [m]')
+    plt.ylabel(r'Successrate [success/$n_{K+}$]')
+    plt.show()
+
+def RunExperiment(E_K_0, E_K_plus, p, b, g, a_range, tau, n):       #Ausfuehrung des Experiments
     A = np.linspace(a_range[0],a_range[1],a_range[2])
     decay = SimulateNDecays(E_K_0, E_K_plus, p, b, g, tau, n)
     P_lab_0, P_lab_plus, z_length = decay[0], decay[1], decay[2]
@@ -67,13 +78,12 @@ def RunExperiment(E_K_0, E_K_plus, p, b, g, a_range, tau, n):       #optimale Po
     for i in range(len(A)):
         if SR[i]==SR_max:
             a_opt = A[i]
-    return a_opt, SR, plt.plot(A,SR)
-
+    return a_opt, SR_max, SR, GraficEvaluation(a_opt, SR_max, A, SR) #Ausgabe: optimale Detektorposition, maximale Erfolgsrate, Messdaten, Plot
 
 def SimulateKDecayPoint(sx, sy, tau):                               #Funktion gibt Zerfallspunkt eines Kaons aus (x,y,z) und Vektor in Flugrichtung
-    alpha = np.array(stats.norm.rvs(loc=0, scale=sx, size=1))       #Erzeugen eines zufälligen Streuwinkels in x Richtung 
-    beta = np.array(stats.norm.rvs(loc=0, scale=sy, size=1))        #Erzeugen eines zufälligen Streuwinkels in y Richtung
-    theta = np.arccos(np.cos(alpha)*np.cos(beta))                   #Berechne theta und phi aus Streuwinkeln (Wäre froh würde jemand Nachrechnen) 
+    alpha = np.array(stats.norm.rvs(loc=0, scale=sx, size=1))       #Erzeugen eines zufaelligen Streuwinkels in x Richtung 
+    beta = np.array(stats.norm.rvs(loc=0, scale=sy, size=1))        #Erzeugen eines zufaelligen Streuwinkels in y Richtung
+    theta = np.arccos(np.cos(alpha)*np.cos(beta))                   #Berechne theta und phi aus Streuwinkeln (Waere froh würde jemand Nachrechnen) 
     phi = np.arctan(np.tan(beta)/np.sin(alpha))                         
     vlen= np.array(stats.expon.rvs(loc=0, scale=tau, size=1))       #Erzeuge Flugläng eines Kaons (Exponentialverteilt, mittlere Flugweite tau) 
     x0= np.sin(theta)*np.cos(phi)*vlen                                 
@@ -100,9 +110,8 @@ sy = 1*10**-3			#Standardabweichung yWinkel (beta)
 
 #Auswertung:
 
-plt.figure()
-a_opt, SR, f = RunExperiment(E_K_0, E_K_plus, p, b, g, a_range, tau, n)
+a_opt, SR_max, SR, f = RunExperiment(E_K_0, E_K_plus, p, b, g, a_range, tau, n)
 with open("data.txt", "w") as fh:       #Ausgabe der Messdaten in Datei
 	fh.write(str(SR))
-plt.show()
 print('Optimale Position: ', a_opt)
+print('Maximale Erfolgsrate: ', SR_max)
