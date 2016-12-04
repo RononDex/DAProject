@@ -80,6 +80,12 @@ def RunExperiment(E_K_0, E_K_plus, p, b, g, a_range, tau, n):       #Ausfuehrung
             a_opt = A[i]
     return a_opt, SR_max, SR, GraficEvaluation(a_opt, SR_max, A, SR) #Ausgabe: optimale Detektorposition, maximale Erfolgsrate, Messdaten, Plot
 
+
+"""
+Zweiter Teil des Experiments, mit Abweichung von Z-Achse unterhalb von hier
+"""
+
+
 def SimulateKDecayPoint(sx, sy, tau):                               #Funktion gibt Zerfallspunkt eines Kaons aus (x,y,z) und Vektor in Flugrichtung
     alpha = np.array(stats.norm.rvs(loc=0, scale=sx, size=1))       #Erzeugen eines zufaelligen Streuwinkels in x Richtung 
     beta = np.array(stats.norm.rvs(loc=0, scale=sy, size=1))        #Erzeugen eines zufaelligen Streuwinkels in y Richtung
@@ -91,10 +97,51 @@ def SimulateKDecayPoint(sx, sy, tau):                               #Funktion gi
     z0= np.cos(theta)*vlen
     dp= np.array([[x0],[y0],[z0]]).T                                #Zerfallspunkt (dp=decaypoint) 
     ev = dp/vlen                                                    #Normierter Vektor in Flugrichtung 
-    return  dp, ev
+    return  dp, ev, alpha, beta
+
+def RotationUmyAchse(alpha):                                         #Rotationsmatrix, alpha um y Achse
+    return np.array([[np.cos(alpha),0,np.sin(alpha)],[0,1,0],[-np.sin(alpha),0,np.cos(alpha)]])    
+
+def RotationUmxAchse(beta):                                         #Rotationsmatrix, beta um x Achse
+    return np.array([[1,0,0],[0,np.cos(beta),-np.sin(beta)],[0,np.sin(beta),np.cos(beta)]])
+
+def RotateDecayVectors(sx, sy, tau, E_K_0, E_K_plus, p, b, g):      #Erzeugt in K richtung Rotierte Zerfallsvektoren
+    alpha = SimulateKDecayPoint(sx, sy, tau)[-2]                    #Rotationswinkel um y Achse
+    beta = SimulateKDecayPoint(sx, sy, tau)[-1]                     #Rotationswinkel um x Achse
+    P_lab_0 = (SimulateOneDecay(E_K_0, E_K_plus, p, b, g, tau)[0])[1:]          #Normale Zerfallsvektoren
+    P_lab_plus = (SimulateOneDecay(E_K_0, E_K_plus, p, b, g, tau)[1])[1:]
+    P_lab_0r = np.dot(RotationUmxAchse(beta),np.dot(RotationUmyAchse(alpha),P_lab_0.T))   #Gedrehte Zerfallsvektoren  
+    P_lab_plusr = np.dot(RotationUmxAchse(beta),np.dot(RotationUmyAchse(alpha),P_lab_plus.T))
+    return P_lab_0r, P_lab_plusr
+   
+
+def HitDistanceWithAngle(P_lab_0r, P_lab_plusr, dp, a):                     #Abstand zu Mittelpunkt des Detektors von Pi_0 und Pi_plus                                           
+    if float(dp[-1]) >= a:                                                  #Aussortieren der K+, die hinter Detektor zerfallen
+        return [100,100]
+    else:
+        n_0 = float((a-dp[-1])/float(P_lab_0r[-1]))                         #Berechne wieviel mal P_lab_0r an dp angehängt werden muss damit z=a
+        n_plus = float((a-dp[-1])/float(P_lab_plusr[-1]))
+        d_0 = np.sqrt((float(dp[0])+float(n_0*P_lab_0r[0]))**2+(float(dp[1])+float(n_0*P_lab_0r[1]))**2)  #Berechnet Abstand zu z Achse (r=(x^2+y^2)^(1/2))
+        d_plus = np.sqrt((float(dp[0])+float(n_plus*P_lab_plusr[0]))**2+(float(dp[1])+float(n_plus*P_lab_plusr[1]))**2)  
+        return [d_0, d_plus] 
 
 
-    
+def RunExperiment2(sx, sy, tau, E_K_0, E_K_plus, p, b, g, a, n):	#Gibt Liste mit Anz. success aus für a Variiert von 0 bis a, mit je n versuchen
+    successlist = []
+    for i in range(a):							#Für jede Länge von 0 bis a
+        j=0
+        success = 0
+        while j < n:							#Führe Experiment n mal durch
+            P_lab_0r = RotateDecayVectors(sx, sy, tau, E_K_0, E_K_plus, p, b, g)[0]
+            P_lab_plusr = RotateDecayVectors(sx, sy, tau, E_K_0, E_K_plus, p, b, g)[1]
+            dp = SimulateKDecayPoint(sx, sy, tau)[0][0][0]
+            if HitDistanceWithAngle(P_lab_0r, P_lab_plusr, dp, i)[0] <=2 and HitDistanceWithAngle(P_lab_0r, P_lab_plusr, dp, i)[1] <=2:
+                success += 1						#success falls beide abstände von Mittelpunkt <=2
+            j+=1
+        successlist.append(success/n)					#Generiere Liste mit relativer anz. success für jede Länge
+    return successlist    
+
+
 #Parameter:
 
 E_K_0 = 245.563588 #MeV         #Energie der neutrale Pionen in K+ system
@@ -104,7 +151,8 @@ b = 0.99997833784995            #Betafaktor
 g = 151.92756392754             #Gammafaktor
 tau = 132.97                    #Mittlere Zerfallsstrecke von K+
 n = 200                         #Anzahl K+
-a_range = [0,500,500]           #Anfangspunkt, Endpunkt, Anzahl Messungen
+a_range = [0,500,500]  		#Anfangspunkt, Endpunkt, Anzahl Messungen
+a = 400				#Endpunkt der Messung Teil 2
 sx = 1*10**-3			#Standardabweichung xWinkel (alpha)
 sy = 1*10**-3			#Standardabweichung yWinkel (beta)
 
@@ -115,3 +163,6 @@ with open("data.txt", "w") as fh:       #Ausgabe der Messdaten in Datei
 	fh.write(str(SR))
 print('Optimale Position: ', a_opt)
 print('Maximale Erfolgsrate: ', SR_max)
+
+print(RunExperiment2(sx, sy, tau, E_K_0, E_K_plus, p, b, g, a, n)) 		#Für eine Schöne Auswertung sollte noch eine Funktion geschrieben werden.
+plt.plot(RunExperiment2(sx, sy, tau, E_K_0, E_K_plus, p, b, g, a, n))
