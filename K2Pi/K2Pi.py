@@ -106,10 +106,11 @@ def RotationUmxAchse(beta):                                         #Rotationsma
     return np.array([[1,0,0],[0,np.cos(beta),-np.sin(beta)],[0,np.sin(beta),np.cos(beta)]])
 
 def RotateDecayVectors(sx, sy, tau, E_K_0, E_K_plus, p, b, g):      #Erzeugt in K richtung Rotierte Zerfallsvektoren
-    alpha = SimulateKDecayPoint(sx, sy, tau)[-2]                    #Rotationswinkel um y Achse
-    beta = SimulateKDecayPoint(sx, sy, tau)[-1]                     #Rotationswinkel um x Achse
-    P_lab_0 = (SimulateOneDecay(E_K_0, E_K_plus, p, b, g, tau)[0])[1:]          #Normale Zerfallsvektoren
-    P_lab_plus = (SimulateOneDecay(E_K_0, E_K_plus, p, b, g, tau)[1])[1:]
+    dp,ev, alpha,beta = SimulateKDecayPoint(sx, sy, tau)                   #Rotationswinkel
+    	                   
+    P_lab_0,P_lab_plus, z_length= SimulateOneDecay(E_K_0, E_K_plus, p, b, g, tau)         #Normale Zerfallsvektore
+    P_lab_0=P_lab_0[1:]
+    P_lab_plus=P_lab_plus[1:]
     P_lab_0r = np.dot(RotationUmxAchse(beta),np.dot(RotationUmyAchse(alpha),P_lab_0.T))   #Gedrehte Zerfallsvektoren  
     P_lab_plusr = np.dot(RotationUmxAchse(beta),np.dot(RotationUmyAchse(alpha),P_lab_plus.T))
     return P_lab_0r, P_lab_plusr
