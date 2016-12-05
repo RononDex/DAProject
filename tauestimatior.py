@@ -27,7 +27,6 @@ def f1(t, tau_k, N):
 
 def f2(t, tau_k,a, N):
     tau_pplus=4188
-    
     f=N*(a/tau_pplus*np.exp(-t/tau_pplus)+(1-a)/tau_k*np.exp(-t/tau_k))
     return f
     
