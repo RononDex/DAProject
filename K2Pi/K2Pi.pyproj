@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>cad18cdf-5dc7-40c0-9950-54897febd30a</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>K2Pi.py</StartupFile>
+    <StartupFile>tauestimatior.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -23,13 +23,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="K2Pi.py" />
+    <Compile Include="tauestimatior.py" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="data\dec_lengths.dat" />
+    <Content Include="dec_lengths.dat" />
     <Content Include="experiment_design.pdf" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="data\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
