@@ -83,7 +83,7 @@ def successrate(P_lab_0, P_lab_plus, dp, a, n):                         #Zaehlun
             success += 1
     return success/n
 
-def GraficEvaluation(a_opt, SR_max, A, SR):			                    #huebsche Darstellung der Messwerte
+def GraficEvaluation(a_opt, SR_max, A, SR):			        #huebsche Darstellung der Messwerte
     plt.figure()
     plt.plot(A,SR)
     plt.xlim(xmin=a_range[0],xmax=a_range[1])
