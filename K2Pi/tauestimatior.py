@@ -24,13 +24,13 @@ def f(x,A,B,C,D):
 #D = the decay length of the Kaon
     return A * (B * np.exp(-1 * x / C) + np.exp(-1 * x / D) )
 
-para, cov = scipy.optimize.curve_fit(f,x,y,bounds=([0,0,4187,0], [100000, 0.84/0.16 ,4189,4188]),p0=[16000,5.25,4188, 500])
-print(para)
+param, cov = scipy.optimize.curve_fit(f,x,y,bounds=([0,0,4187,0], [100000, 0.84/0.16 ,4189,4188]),p0=[16000,5.25,4188, 500])
+print(param)
 
 
 plt.figure()
 plt.plot(x,y, label='data')                          #daten geplottet
-plt.plot(x, f(x, *para),label='fited function')
+plt.plot(x, f(x, *param),label='fited function')
 
 plt.xlabel('decay length [m]')
 plt.ylabel('number of decays')
