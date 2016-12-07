@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>cad18cdf-5dc7-40c0-9950-54897febd30a</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>tauestimatior.py</StartupFile>
+    <StartupFile>K2Pi.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>

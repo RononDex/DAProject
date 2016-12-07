@@ -116,10 +116,10 @@ p = 205.14091 #MeV/c            #Impulsbetrag der Pionen (der selbe fuer beide)
 b = 0.99997833784995            #Betafaktor
 g = 151.92756392754             #Gammafaktor
 tau = 560                       #Mittlere Zerfallsstrecke von K+
-n = 100                         #Anzahl K+
-a_range = [0,500,500]  		#Anfangspunkt, Endpunkt, Anzahl Messungen
-sx = 1e-3			#Standardabweichung xWinkel (alpha)
-sy = 1e-3   			#Standardabweichung yWinkel (beta)
+n = 300                         #Anzahl K+
+a_range = [0,500,500]  		    #Anfangspunkt, Endpunkt, Anzahl Messungen
+sx = 1e-3			            #Standardabweichung xWinkel (alpha)
+sy = 1e-3   			        #Standardabweichung yWinkel (beta)
 
 #Auswertung:
 a_opt, SR_max, SR, f = RunExperiment(sx, sy, E_K_0, E_K_plus, p, b, g, a_range, tau, n)
