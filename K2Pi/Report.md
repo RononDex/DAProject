@@ -31,3 +31,6 @@ As we can see here, the function called "f1" is the best fit for the dataset. We
 
 ### Simulating the K<sup>+</sup> decay
 To simulate the decay, we wrote a numerical simulation in python. Bascially we simulate the collimator shooting one K<sup>+</sup> particle at a time and with τ<sub>K<sup>+</sup></sub> that we got from the first part of the assignement we can calculate when this particle should decay. When the kaon decays we generate the π<sup>0</sup> and the π<sup>+</sup> particle with random angles θ and φ in the K<sup>+</sup> restframe and the calculate the repective angles in the lab frame (using a Lorentz boost, matrix multiplication). Since the detectors are given in the instructions to be circular with 4m in diameter, we can now easily calculate where the particles will be at z=[location of sensor]. If this location is within the 4m of the sensors diameter we have a positive event registration.
+
+This is how the decay looks like from the two different lab frames:
+![Decay in K<sup>+</sup> and lab frame](https://raw.githubusercontent.com/RononDex/DAProject/master/K2Pi/Frames.png)
