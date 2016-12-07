@@ -39,3 +39,11 @@ The time that the kaon needs to decay is calculated by creating a contineous ran
 ```python
 vlen= np.array(stats.expon.rvs(loc=0, scale=tau, size=1))
 ```
+Where tau is τ<sub>K<sup>+</sup></sub> and stats is the library scipystats.
+After the decay happend, we just let the π<sup>+</sup> and π<sup>0</sup> flying in their respective direction as seen from the lab frame and check if they hit the sensors.
+
+The simulation script "K2Pi.py" produces a plot where on the z axis those particles can be detected by the sensor and plots the amount of positive events for a given distance between the sensors, given that the first one is right in front of the collimator to pick up all the K<sup>+</sup>
+
+[Simulation with 50 decays](https://raw.githubusercontent.com/RononDex/DAProject/master/K2Pi/Simulation50.png)
+The point where the most events get registered is marked in the plot, which in this case is at 370m distance.
+Note that every run of the simulation will produce a different result, since this process has (as explained above) an element of randomness in it.
