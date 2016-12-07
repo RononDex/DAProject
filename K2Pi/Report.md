@@ -9,12 +9,12 @@ The project is a collaboration effort between Nora Salgo, Tino Heuberger, Manuel
 
 ### The experiment
 
-The experiment, which is called K2Pi, analyses the decay of a K<sup>+</sup> particle into a π<sup>0</sup> and a π<sup>+</sup>
-Where the lifetime of a kaon can be determined by analasying the data from anohter experiment called LifeK.
+The experiment, which is called K2Pi, analyses the decay of K<sup>+</sup> particles into π<sup>0</sup> and a π<sup>+</sup>
+Where the lifetime of a K<sup>+</sup> can be determined by analasying the data from anohter experiment called LifeK.
 
 ![Experiment setup](https://raw.githubusercontent.com/RononDex/DAProject/master/K2Pi/ExperimentSetup.jpg)
 
-As we can see, we have a collimator which accelerates the K<sup>+</sup> and generates a stream of particles. Then we have two detectors placed at a certain distance from each other along the flight path of the kaon. The first detector is called the "Up stream detector" and measures the direction and the momentum of the Kaons from the stream: The second detector, called "Downstream detector", which is composed of a tracking detector to detect the π<sup>+</sup> and a calorimeter to measure the π<sup>0</sup>.
+As we can see, we have a collimator which accelerates the K<sup>+</sup> particels and generates a stream of said particles. Further we have two detectors placed at a certain distance from each other along the flight path of the K<sup>+</sup>. The first detector is called the "Up stream detector" and measures the direction and the momentum of the Kaons from the stream: The second detector, called "Downstream detector", which is composed of a tracking detector to detect the π<sup>+</sup> and a calorimeter to measure the π<sup>0</sup>.
 
 However the pions also have a decay time which is given by τ<sub>π</sub> = 2.6 * 10<sup>-8</sup>s, this gives us an average travel distance of Beta\*Gamma\*c\*τ<sub>π</sub> = 4.188km before a pion decays.
 
