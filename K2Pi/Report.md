@@ -14,6 +14,13 @@ Where the lifetime of a kaon can be determined by analasying the data from anoht
 
 [image Experiment PDF]
 
-As we can see, we have a collimator which generates a stream of Kaon particles. Then we have two detectors placed at a certain distance from each other along the flight path of the kaon. The first detector is called the "Up stream detectors" and measures how many Kaons are in the stream, where the second detector, called "Downstream detector", measures the decayed pions.
+As we can see, we have a collimator which accelerates the K<sup>+</sup> and generates a stream of particles. Then we have two detectors placed at a certain distance from each other along the flight path of the kaon. The first detector is called the "Up stream detectors" and measures the direction and the momentum of the Kaons from the stream: The second detector, called "Downstream detector", which is composed of a tracking detector to detect the π<sup>+</sup> and a calorimeter to measure the π<sup>0</sup>.
 
-However the pions also have a decay time which is given by T<sub>π</sub> = 2.6 * 10<sup>-8</sup>s, which gives us an average travel distance of Beta\*Gamma\*c\*T<sub>π</sub> = 4.188km before a pion decays.
+However the pions also have a decay time which is given by τ<sub>π</sub> = 2.6 * 10<sup>-8</sup>s, which gives us an average travel distance of Beta\*Gamma\*c\*τ<sub>π</sub> = 4.188km before a pion decays.
+
+For the purpose of the project we were told to assume that the π<sup>0</sup> is stable and does not decay.
+We now have to create a simulation to simulate this decay, and find the optimal distance between the two sensors to capture as many events as possible.
+
+## Results
+
+### Determining τ<sub>K<sup>+</sup></sub> from the given data
