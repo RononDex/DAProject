@@ -19,7 +19,7 @@ As we can see, we have a collimator which accelerates the K<sup>+</sup> and gene
 However the pions also have a decay time which is given by τ<sub>π</sub> = 2.6 * 10<sup>-8</sup>s, which gives us an average travel distance of Beta\*Gamma\*c\*τ<sub>π</sub> = 4.188km before a pion decays.
 
 For the purpose of the project we were told to assume that the π<sup>0</sup> is stable and does not decay.
-We now have to create a simulation to simulate this decay, and find the optimal distance between the two sensors to capture as many events as possible.
+We now have to create a simulation to simulate this decay, and find the optimal distance between the two sensors to capture as many events as possible. In the first part of the simulation we will assume a stream that has no spread and moves exactly on the z-axis. For the second part we will add a spread to the stream coming from the colimator.
 
 ## Results
 
