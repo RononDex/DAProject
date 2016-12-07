@@ -27,3 +27,5 @@ We now have to create a simulation to simulate this decay, and find the optimal 
 First part of our assignement was to determine the average lifetime of a K<sup>+</sup> particle. For this we have the file dec_lengths.dat that contains 100'000 measurements of K<sup>+</sup> particles and their travel time before they decay. Each row in that documents represents one measurements with the unit [meters].
 To create a best fit of the data, we created tauestimator.py which plots different functions against the data to find the best fit.
 ![Fitting the measurement from the experiment KLife](https://raw.githubusercontent.com/abold/DAProject/master/K2Pi/plot2.jpg)
+As we can see here, the function called "f1" is the best fit for the dataset. We can then use this function to determine the decay time τ<sub>K<sup>+</sup></sub>. 
+
