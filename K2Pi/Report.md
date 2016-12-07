@@ -42,9 +42,21 @@ vlen= np.array(stats.expon.rvs(loc=0, scale=tau, size=1))
 Where tau is τ<sub>K<sup>+</sup></sub> and stats is the library scipystats.
 After the decay happend, we just let the π<sup>+</sup> and π<sup>0</sup> flying in their respective direction as seen from the lab frame and check if they hit the sensors.
 
-The simulation script "K2Pi.py" produces a plot where on the z axis those particles can be detected by the sensor and plots the amount of positive events for a given distance between the sensors, given that the first one is right in front of the collimator to pick up all the K<sup>+</sup>
+The simulation script "K2Pi.py" produces a plot where on the z axis those particles can be detected by the sensor and plots the amount of positive events for a given distance between the sensors, given that the first one is right in front of the collimator to pick up all the K<sup>+</sup>. This is the simulation with no spread applied at the collimator:
+![Simulation with 300 K<sup>+</sup>, no spread](https://raw.githubusercontent.com/RononDex/DAProject/master/K2Pi/Simulation50NoSpread.png)
 
-![Simulation with 50 decays](https://raw.githubusercontent.com/RononDex/DAProject/master/K2Pi/Simulation50.png)
+The point where the most events get registered is marked in the plot, which in this case is at 250m distance with a maximum efficency of ~30%.
+Note that every run of the simulation will produce a different result, since this process has (as explained above) an element of randomness in it, however the bigger the number of simulated K<sup>+</sup> the less the spread of the found optimal distances between the simulations get.
 
-The point where the most events get registered is marked in the plot, which in this case is at 370m distance.
-Note that every run of the simulation will produce a different result, since this process has (as explained above) an element of randomness in it.
+Simulation with a spreading beam of K<sup>+</sup> at the collimator of 0.001:
+![Simulation with 300 K<sup>+</sup>, with spread](https://raw.githubusercontent.com/RononDex/DAProject/master/K2Pi/Simulation50.png)
+
+As we can see, the results are a bit different. The optimal distance is determined to be 364m with an effiency of ~35%
+
+For the simulation we used the following parameters σ<sub>x</sub>=σ<sub>y</sub> = 1mrad:
+ - E<sub>π<sup>0</sup></sub> = 245.563588 MeV     Energy of π<sup>0</sup> in K<sup>+</sup> rest frame
+ - E<sub>π<sup>+</sup></sub> = 248.118174 MeV     Energy of π<sup>+</sup> in K<sup>+</sup> rest frame
+ - p = 205.14091 Mev / c                          Impuls of the pions (same for both), in  K<sup>+</sup> rest frame
+ - β = 0.99997833784995                           Beta factor of a K<sup>+</sup> rest frame
+ - γ = 151.92756392754                            Corresponding gamma factor to the beta factor
+ - τ = 560 m                                      τ as calculated in the first part of the experiment
