@@ -9,4 +9,4 @@ The project is a collaboration effort between Nora Salgo, Tino Heuberger, Manuel
 
 ### The experiment
 
-The experiment, which is called K2Pi, analyses the decay of a K^+ particle into a pion^0 and a pion^+ 
+The experiment, which is called K2Pi, analyses the decay of a K<sup>+</sup> particle into a pion^0 and a pion^+ 
