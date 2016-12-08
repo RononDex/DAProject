@@ -132,7 +132,7 @@ sorting=none
 	
 	This is the report for the K2Pi assignment for the data analysis project. In this report we will document our results and how we derived them.
 	
-	\subsection*{The experiment}
+	\subsection*{The Experiment}
 	
 	The experiment, which is called K2Pi, analyses the decay of positively charged kaons $K^+$ into one positively charged and one neutral pion ($\pi^+$ and a $\pi^0$), where the lifetime of a $K^+$ can be determined by analysing the data from an earlier experiment called LifeK.
 	
@@ -148,13 +148,13 @@ sorting=none
 	\\
 	However, the pions also have an average lifetime which is given by $\tau_{\pi^+} = 2.6 \cdot 10^{-8}s$. This results in an average decay length of $\beta \gamma c\tau_{\pi^+} = 4.188$km.
 	
-	For the purpose of the project we've been told to assume that the $\pi^0$ is stable and does not decay during the process. We now have to create a simulation to simulate this decay and find the optimum distance between the two detectors in order to capture as many events as possible, where a successful event is considered the detection of both pions corresponding to the same kaon decay. In the first part of the simulation, we will assume a stream that has no spread and moves exactly on the z-axis. For the second part we will add a spread to the stream coming from the collimator following a Gaussian distribution.
+	For the purpose of the project we have been told to assume that the $\pi^0$ is stable and does not decay during the process. We now have to create a simulation of this decay and find the optimum distance between the two detectors in order to capture as many events as possible, where a successful event is considered the detection of both pions corresponding to the same kaon decay. In the first part of the simulation, we will assume a stream that has no spread and moves exactly on the z-axis. For the second part we will add a spread to the stream coming from the collimator following a Gaussian distribution.
 	
 	\clearpage
 	
-	\chapter{Lifetime}
+	\chapter{Average Decay Length of Kaon}
 	
-	In order to estimate the average decay length of the kaon we used the data of an earlier experiment called LifeK, which used the same beam line and the same beam momentum as the K2Pi experiment. In the LifeK experiment, the beam was composed of $84\%$ positively charged pions $\pi^+$ and $16\%$ kaons $K^+$. In total there are $100`000$ measurements of decay lengths of the particles. This means the data from the LifeK experiment corresponds to a convolution of two exponential distributions with the parameters $\tau_{\pi^+}$ and $\tau_{K^+}$, the average decay length of the two particle, and two normalization constants, which correspond to the number of each particle. The probability for a kaon to decay at the point x is given by the following equation.
+	In order to estimate the average decay length of the kaon we used the data of an earlier experiment called LifeK, which used the same beam line and the same beam momentum as the K2Pi experiment. In the LifeK experiment, the beam was composed of $84\%$ positively charged pions $\pi^+$ and $16\%$ kaons $K^+$. In total we have $100`000$ measurements of decay lengths of the particles. This means the data from the LifeK experiment corresponds to a convolution of two exponential distributions with the parameters $\tau_{\pi^+}$ and $\tau_{K^+}$, the average decay length of the two particle, and two normalization constants, which correspond to the number of each particle. The probability for a kaon to decay at the point x is given by the following equation.
 	\begin{equation}
 		\label{convolutedDistribution}
 		P(x)=  \frac{n_{\pi^+}}{\tau_{\pi^+}} \cdot e^{-x/ \tau_{pi^+}} + \frac{n_{K^+}}{\tau_{K^+}} \cdot e^{-x/ \tau_{K^+}}
