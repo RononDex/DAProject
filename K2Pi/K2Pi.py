@@ -168,18 +168,19 @@ def RunExperimentMultiThreaded(sx, sy, E_K_0, E_K_plus, p, b, g, a_range, tau, n
 
 #Parameter:
 
-E_K_0 = 245.563588 #MeV         #Energie der neutrale Pionen in K+ system
-E_K_plus = 248.118174 #MeV      #Energie der positiven Pionen in K+ system
-p = 205.14091 #MeV/c            #Impulsbetrag der Pionen (der selbe fuer beide)
-b = 0.99997833784995            #Betafaktor
-g = 151.92756392754             #Gammafaktor
-tau = 560                       #Mittlere Zerfallsstrecke von K+
-n = 10000                       #Anzahl K+
+E_K_0 = 245.5611565 #MeV            #Energie der neutrale Pionen in K+ system
+E_K_plus = 248.115779 #MeV          #Energie der positiven Pionen in K+ system
+p = 205.138 #MeV/c                  #Impulsbetrag der Pionen (der selbe fuer beide)
+b = 0.999978336972366               #Betafaktor
+g = 151.924486603                   #Gammafaktor
+tau = 576.21338881                  #Mittlere Zerfallsstrecke von K+
+uncertainty_tau=0.75205
+n = 100000                          #Anzahl K+
 a_range = [0,500,1000]  		    #Anfangspunkt, Endpunkt, Anzahl Messungen
-sx = 1e-3			            #Standardabweichung xWinkel (alpha)
-sy = 1e-3   			        #Standardabweichung yWinkel (beta)
+sx = 1e-3			                #Standardabweichung xWinkel (alpha)
+sy = 1e-3   			            #Standardabweichung yWinkel (beta)
 
-enableMultiThreading = True     # Set to true to enable multithraeding, false to disable it
+enableMultiThreading = True         # Set to true to enable multithraeding, false to disable it
 
 
 #Auswertung:
