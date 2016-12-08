@@ -154,6 +154,59 @@ For the purpose of the project we've been told to assume that the $\pi^+$ is sta
 
 \chapter{Lifetime}
 
+In order to estimate the average decay length of the kaon we used the data of an earlier experiment called LifeK, which used the same beam line and the same beam momentum as the K2Pi experiment. In the LifeK experiment, the beam was composed of $84\%$ positively charged pions $\pi^+$ and $16\%$ kaons $K^+$. In total there are $100`000$ measurements of decay lengths of the particles. This means the data from the LifeK experiment corresponds to a convolution of two exponential distributions with the parameters $\tau_{\pi^+}$ and $\tau_{K^+}$, the average decay length of the two particle, and two normalization constants, which correspond to the number of each particle. The probability for a kaon to decay at the point x is given by the following equation.
+\begin{equation}
+\label{convolutedDistribution}
+P(x)=  \frac{n_{\pi^+}}{\tau_{\pi^+}} \cdot e^{-x/ \tau_{pi^+}} + \frac{n_{K^+}}{\tau_{K^+}} \cdot e^{-x/ \tau_{K^+}}
+\end{equation} 
+We already know three of those parameters:
+\begin{align*}
+n_{\pi^+} &= 84`000 \\
+n_{K^+} &= 16`000 \\
+\tau_{\pi^+} &= 4188 m
+\end{align*}
+In order to find the average decay length of the kaon we tried two different methods.\\
+First, we estimated $\tau_{K^+}$ directly from the given data with the scipy.optimizer.curvefit where we fitted the function given by equation \ref{convolutedDistribution}. We left all four parameters of the equation as independent variables, but initialized them at the expected value, and bound them in reasonable bounds. In order to have an idea what to expect for the average decay length of the kaon we calculated the average decay length $\tau_{K^+}= \gamma \beta \omega_{K^+}$ where $\beta$ and $\gamma$ is calculated in section \ref{sec:gammabeta} and $\omega_{K^+}$ is the average lifetime of the kaon, which is $(1.2379 \pm 0.0021) \times 10^{-8} s $ according to the particle data group\footnote{\url{http://pdg.lbl.gov/2016/listings/rpp2016-list-K-plus-minus.pdf}, Page 2, 2016}. For the expected decay length value of the kaon we obtain $\tau_{K^+} = 563.7$ m.
+
+
+
+This method leads to the following result:\\
+\begin{tabular}{c|cc}
+\centering
+ & Estimated Value  & Uncertainty \\ 
+\hline 
+$\hat{\tau}_{K^+}$ & 577 m & 6 m \\ 
+
+$\hat{\tau}_{\pi^+}$ & 41890 m  & 21 m  \\
+
+${n_{\pi^+}}/{n_{K^+}}$ & 0.697 & 0.0066 \\ 
+
+$n_{K^+}$ & 12375 & 63 \\
+\end{tabular} 
+
+In comparison with the expected value of $563.7$ m, the estimated $\tau_{K^+}$ is quite reasonable. But since all other parameters are independent, they differ from our initial assumption.
+\\
+\\
+For the second method to estimate $\tau_{K^+}$ we separated the two exponential distribution using a Monte Carlo method to simplify the fit function. We represented the data of LifeK in a histogram with 100 bins. We simulated an exponential distribution with a scale of $\tau_{\pi^+}$ and represented the simulated data in a histogram, using the same bins as before. We subtracted the values of the two histograms to get the distribution of the kaon. To estimate the average decay length, we used the Maximum-Likelihood ethod. To estimate the uncertainty we repeat the Maximum-Likelihood Method N (=1`000) times in order to calculate the mean value of $\hat{\tau}_{K^+}$. The uncertainty $m_{\tau}$ can thus be determined using the standard deviation $\sigma_{\hat{\tau}}$.
+\begin{align*}
+\hat{\tau}_{K^+}&= \frac{\sum_{i=1}^{100} (x_i \cdot n_i)}{\sum_{i=1}^{100} n_i}\\
+m_{\hat{\tau}}&= \frac{\sigma_{\hat{\tau}}}{\sqrt{N}}
+\end{align*}
+The results are:
+\begin{align*}
+\hat{\tau}_{K^+}&=578.x m \\
+m_{\hat{\tau}}&=2.4 m
+\end{align*}
+
+\begin{figure}[htbp] 
+\centering
+\includegraphics[width=0.7\textwidth]{hist_tau_estimator3.jpg}
+\caption{Gaussian distribution of $\hat{\tau}_{K^+}$ estimator}
+\label{fig:Bild1}
+\end{figure}
+
+We decided to use the results of the second method because of the following reasons. The uncertainty of the second method is significantly smaller. With the first method we used a predefined function, where we had no transparency on exactly what was computed, whereas with the second method we understood every step. Thirdly, we were not able to explain the change of the independent variables. 
+
 \clearpage
 
 
@@ -168,7 +221,7 @@ At first, we defined a function that returns the position vector $P_{decay}$ of 
 
 For the actual $K^+$ decay into pions, we defined a function that simulates the decay in the $K^+$ rest frame and boosts the momentum 4-vectors to the lab frame.
  First, it creates the direction vector of the $\pi^0$-momentum in the $K^+$ rest frame in standard spherical coordinates where the angle $\theta$ is a random variable, uniformly distributed in a range from 0 to $\pi$ and $\varphi$ is uniformly distributed in a range from 0 to 2$\pi$. 
-\begin{figure}[h] 
+\begin{figure}[htbp] 
 \centering
 \includegraphics[width=0.75\textwidth]{Frames.png} 
 \caption{$K^+$ into $\pi^0$ and $\pi^+$ in rest frame and in lab frame}
@@ -257,8 +310,7 @@ If the z component of the kaon decay point is greater than $a$ and thus the $K^+
 
 \section{Run Experiment}
 
-Now being able to rate one event as success or failure, the experiment can be performed. In order to save computing time and also to ensure maximum comparability, a list of decay points is generated first with corresponding lists of the directions of the $\pi^+$ and the $\pi^0$ as described in section \ref{sec:kdecay}. 
-Then for every decay point with $\pi^0$ and $\pi^+$ directions, success or failure is determined as described in section \ref{sec:pdetection}. With this information a success rate for the lists can be calculated for a certain distance a (z component of the position of the detector). The success rate was simply calculated by the number of successes divided by the total number of trials. By varying the distance a, and calculating the success rate for each of its values the optimal position was determined.
+Now being able to rate one event as either success or failure, the experiment can be performed. In order to save computing time and also to ensure maximum comparability among different detector positions, a list of $n$ decay points is generated first with corresponding flight directions of the $\pi^+$ and the $\pi^0$ as described in section \ref{sec:kdecay}. Also an array of $N$ different detector positions $a_k$ is created. Then for every position $a_k$, the number of successfully detected decays is counted as described in section \ref{sec:pdetection} and divided by the number of initially generated kaons. This success rate is plotted for every detector position $a_k$ and the position where the success rate is maximal is considered the optimum detector position. The final code is capable of running both parts of the assignment. For the idealized $K^+$-beam in the z-direction, the input parameters for $\sigma_x$ and $\sigma_y$ just need to be set equal to zero,  which results in the deflection angles $\alpha = 0$ and $\beta = 0$ and therefore no deflection at all.
 
 \clearpage
 
@@ -266,18 +318,28 @@ Then for every decay point with $\pi^0$ and $\pi^+$ directions, success or failu
 \chapter{Conclusion}
 
 The higher the number of iterations for the $\tau$ estimation and the $K^+$ decay simulation, the more accurate the results become. 
-Also, the difference between the simulation with and without the spread at the collimator is quite noticeable. The success rate gets smaller when spreading is enabled and the whole graph gets “shifted” to the right, increasing the optimal distance between the two sensors. 
-With the multithreaded enabled python script “K2pi.py”, we could simulate the decay for large $n$ quite easily. This is the result for $n = 100’000$ with a spread of $\sigma_x=\sigma_y=1$ mrad:
+Also, we expected that the difference between the simulation with and without the spread at the collimator should be quite noticeable. The success rate becomes smaller when spreading is enabled and the whole graph gets “shifted” to the right, increasing the optimal distance between the two sensors. 
+With the multithreaded enabled python script “K2Pi.py”, we could simulate the decay for large n quite easily. This is the result for $n = 100000$ with a spread of $\sigma_x=\sigma_y=1$ mrad:
 
 \begin{figure}[h] 
 \centering
-\includegraphics[width=0.7\textwidth]{Simulation50.png} 
-\caption{Result}
-\label{fig:Zee}    
+\includegraphics[width=0.7\textwidth]{Simulation100kWithSpread.png} 
+\caption{The different detector positions plotted against the corresponding success rate with a Gaussian deflection}   
 \end{figure}
 
-Where the optimal distance is at $295.8m$ with a maximum efficiency of $32.6 \%$. As we can see the cruve is very flat at its peak and therefore the distance between the two sensors does not have to be very precise. Looking at the graph somewhere at $300m \pm 50m$ should be fine and yields only very small differences in the efficiency of the experiment. 
-With spread $= 0$ and $n = 100000$ we get the following result:
+Where the optimum distance is at 295.8 m with a maximum efficiency of 32.6\%. As one can see, the curve is very flat at its peak and therefore the distance between the two sensors does not need to be very precise. Looking at the graph if a range of $(290 \pm 50)$ m the variation of the position yields only very small differences in the efficiency of the experiment.
+
+With spread = 0 and $n = 100000$ we obtain the following result:
+
+\begin{figure}[h] 
+\centering
+\includegraphics[width=0.7\textwidth]{Simulation100kNoSpread.png} 
+\caption{The different detector positions plotted against the corresponding success rate without deflection}   
+\end{figure}
+
+The optimum efficiency is achieved if we place the two sensors at a distance of 285.3 m, where the efficiency lies at 33.7\%. Again, we observe that the curve is very flat at its peak. 
+
+These results also confirm our expectations, that with no spread we get a higher maximum efficiency and a shorter optimal distance between the two sensors.
 
 \clearpage
 
@@ -285,11 +347,11 @@ With spread $= 0$ and $n = 100000$ we get the following result:
 
 \section{Kaon relativistic $\gamma$- and $\beta$-factor} \label{sec:gammabeta}
 
-We know the momentum of the $K^+$: $p_{K^+} = 75 GeV/c$\\
+We are given the momentum of the $K^+$: $p_{K^+} = 75 GeV/c$\\
 From this we can find the velocity of the $K^+$ by the formula:
-\begin{equation}
+\begin{align*}
 p_{K^+} = \gamma \cdot m_{0K^+} \cdot v
-\end{equation}
+\end{align*}
 $\Rightarrow$
 $v/c = \beta = 0.99997834$ ;
 $\gamma = 151.92448660$\\
@@ -298,43 +360,43 @@ $\gamma = 151.92448660$\\
 
 The decay products are produced isotropically, so the momenta of the decay products are equal in modulus and are in opposite direction. 
 So in the $K^+$ rest frame the momenta are conserved:
-\begin{equation}
+\begin{align*}
 \overrightarrow{p}_{K^+} = \overrightarrow{p}_{\pi^0} + \overrightarrow{p}_{\pi^+} = 0
-\end{equation}
+\end{align*}
 
 In modulus:
-\begin{equation}
-p_{\pi^0} = p_{\pi^+} = p
-\end{equation}
+\begin{align*}
+|p^*_{\pi^0}| = |p^*_{\pi^+}| =: |p^*_{\pi}|
+\end{align*}
 
-The decay obey the law of energy conservation in the $K^+$ rest frame:
-\begin{equation}
-E_{K^+} = E_{\pi^0} + E_{\pi^+}
-\end{equation}
+The decay obeys the law of energy conservation in the $K^+$ rest frame:
+\begin{align*}
+E^*_{K^+} = E^*_{\pi^0} + E^*_{\pi^+}
+\end{align*}
 
 $\Rightarrow$
-\begin{equation}
-m_{0K^+}c^2 = \sqrt{p^2c^2 + m_{0\pi^0}^2c^4} + \sqrt{p^2c^2 + m_{0\pi^+}^2c^4}
-\end{equation}
+\begin{align*}
+m_{0K^+}c^2 = \sqrt{|p^*_{\pi}|^2c^2 + m_{0\pi^0}^2c^4} + \sqrt{|p^*_{\pi}|^2c^2 + m_{0\pi^+}^2c^4}
+\end{align*}
 
-The rest masses:
-\begin{eqnarray}
+Which results in the rest masses:
+\begin{align*}
 m_{0\pi^0} = 134.9766 MeV/c^2\\
 m_{0\pi^+} = 139.5702 MeV/c^2\\
 m_{0K^+} = 493.677 MeV/c^2
-\end{eqnarray}
+\end{align*}
 
-For the momentum of the pions we get:\\
+For the momentum of the pions we receive:
 
-\begin{equation}
-p = 205.138 MeV/c
-\end{equation}
+\begin{align*}
+|p^*_{\pi}| = 205.138 MeV/c
+\end{align*}
 
 The total energy of the pions are calculated by the following formula:
-\begin{eqnarray}
-E_{\pi^0} = \sqrt{p^2c^2 + m_{0\pi^0}^2c^4} = 245.5611565 MeV\\
-E_{\pi^+} = \sqrt{p^2c^2 + m_{0\pi^+}^2c^4}= 248.115779 MeV
-\end{eqnarray}
+\begin{align*}
+E_{\pi^0} = \sqrt{|p^*_{\pi}|^2c^2 + m_{0\pi^0}^2c^4} = 245.5611565 MeV\\
+E_{\pi^+} = \sqrt{|p^*_{\pi}|^2c^2 + m_{0\pi^+}^2c^4}= 248.115779 MeV
+\end{align*}
 
 
 \clearpage  
