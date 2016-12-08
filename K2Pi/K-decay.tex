@@ -1,0 +1,82 @@
+\documentclass[10pt,a4paper]{report}
+\usepackage[latin1]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\begin{document}
+
+
+
+\section{Simulating Decay}
+
+
+We split the $K^+$ decay process and its detection in several distinct parts.
+
+At first, we defined a function that returns the position vector of one single kaon decay in Cartesian coordinates and its two deflection angles with respect to the z-axis. These angles ($\alpha$ in x-direction and $\beta$ in y-direction) are random variables following a Gaussian distribution with $\mu$ = 0 and $\sigma_x$ = $\sigma_y$ = 1 mrad. The modulus is also a random variable but follows an exponential distribution with $\tau$ = $\tau_{K^+}$, which was derived in the first part of the assignment.
+
+For the actual $K^+$ decay into pions, we defined a function that simulates the decay in the $K^+$ rest frame and boosts the momentum 4-vectors to the lab frame.
+ First, it creates the direction vector of the $\pi^0$-momentum in the $K^+$ rest frame in standard spherical coordinates where the angle $\theta$ is a random variable, uniformly distributed in a range from 0 to $\pi$ and $\varphi$ is uniformly distributed in a range from 0 to 2$\pi$. 
+ 
+ 
+%!!!!!!!!!!!!!!!!!
+[Tinos Skizze]
+%!!!!!!!!!!!!!!!!!
+
+
+From this follows the momentum vector $p^*_{\pi^0}$ of the $\pi^0$ by translating to Cartesian coordinates and multiplying the expected modulus $|p^*_{\pi}|$ of the $\pi$ momentum computed in section \ref{}. The corresponding $\pi^+$ momentum vector $p^*_{\pi^+}$ is derived by changing the sign of each Cartesian coordinate, since the pions are assumed to be produced isotropically with back-to-back momentum and from momentum conservation follows that their modulus needs to be equal. 
+\begin{equation}
+p^*_{\pi^0} = |p^*_{\pi}| \cdot \begin{bmatrix}
+\sin\theta \cdot \cos\varphi \\ \sin\theta \cdot \sin\varphi \\ \cos\theta
+\end{bmatrix}
+, \quad \quad p^*_{\pi^+} = -p^*_{\pi^0}
+\end{equation}
+The corresponding energy values $E^*_{\pi}$ (also computed in section \ref{?????}) are amended in order to represent the data as momentum 4-vectors $P^*_{\pi}$  prevalent in special relativity. These vectors are then boosted to the lab frame by multiplying them with the matrix representation of Lorentz boost in the z'-direction whose $\beta$- and $\gamma$-factors are computed in section \ref{}.
+\begin{equation}
+P_{\pi} = 
+\begin{bmatrix}
+E_{\pi} \\ p_{\pi,x'} \\ p_{\pi,y'} \\ p_{\pi,z'}
+\end{bmatrix}
+=
+\begin{bmatrix}
+\gamma & 0 & 0 & \beta \gamma \\
+0 & 1 & 0 & 0 \\
+  0 & 0 & 1 & 0\\
+  \beta \gamma & 0 & 0 & \gamma \\
+\end{bmatrix}
+\cdot
+\begin{bmatrix}
+E_{\pi}^* \\ p_{\pi,x'}^* \\ p_{\pi,y'}^* \\ p_{\pi,z'}^*
+\end{bmatrix} = P^*_{\pi}
+\end{equation}
+The z'-axis here corresponds to the direction of the $K^+$-velocity which is only equivalent to the z-axis of the lab frame in case of an idealized non deflected $K^+$-beam. The three momentum components in the x'-, y'-, and z'-direction of the resulting 4-vectors in the lab frame are thus rotated by the angles $\alpha$ around the y-axis and $\beta$ around the x-axis by multiplying them by the corresponding rotation matrices:
+\begin{equation}
+\begin{bmatrix}
+p_{\pi,x} \\ p_{\pi,y} \\ p_{\pi,z}
+\end{bmatrix}
+=
+\begin{bmatrix}
+1 &   0         & 0           \\
+0 & \cos \beta & -\sin \beta \\
+0 & \sin \beta &  \cos \beta
+\end{bmatrix}
+\cdot
+\begin{bmatrix}
+\cos \alpha  & 0 & \sin \alpha \\
+   0         & 1 &  0          \\
+-\sin \alpha & 0 & \cos \alpha
+\end{bmatrix}
+\cdot
+\begin{bmatrix}
+p_{\pi,x'} \\ p_{\pi,y'} \\ p_{\pi,z'}
+\end{bmatrix}
+\end{equation}
+
+
+
+
+
+
+
+
+\end{document}
