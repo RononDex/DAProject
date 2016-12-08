@@ -243,9 +243,9 @@ def RunExperimentMultiThreaded(sx, sy, E_K_0, E_K_plus, p, b, g, a_range, tau, n
 
     print('Optimal position: ', a_opt)
     print('Max success rate: ', SR_max)
-
-    return a_opt, SR_max, SR, GraficEvaluation(a_opt, SR_max, A, avgSR)    #Ausgabe: optimale Detektorposition, maximale Erfolgsrate, Messdaten, Plot
     
+    #Returns: optimal position of detector, maximum success rate, successrates data, plot
+    return a_opt, SR_max, SR, GraficEvaluation(a_opt, SR_max, A, avgSR)    
 
 
 ### -----------------------------------------------------------------------------------------------------
