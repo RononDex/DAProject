@@ -1,0 +1,60 @@
+\documentclass[11pt]{report}
+\usepackage{amsmath,times}
+\usepackage{amssymb}
+\usepackage[pdftex]{graphicx}
+\usepackage{subfigure,amsfonts}
+\usepackage{array,tabularx}
+\usepackage{epstopdf}
+\usepackage{float}
+\usepackage{listings}
+\usepackage{color}
+
+\newpage
+
+\begin{document}
+
+\section*{Conclusion}
+
+
+The higher the number of iterations for the $\tau$ estimation and the $K^+$ decay simulation, the more accurate the results become. 
+Also, the difference between the simulation with and without the spread at the collimator is quite noticeable. The success rate gets smaller when spreading is enabled and the whole graph gets “shifted” to the right, increasing the optimal distance between the two sensors. 
+With the multithreaded enabled python script “K2pi.py”, we could simulate the decay for large $n$ quite easily. This is the result for $n = 100’000$ with a spread of $\sigma_x=\sigma_y=1$ mrad:
+
+\begin{figure}[h] 
+\centering
+\includegraphics[width=0.9\textwidth]{successrate.png} 
+\caption{Experimental setup}
+\label{fig:Zee}    
+\end{figure}
+
+Where the optimal distance is at $295.8m$ with a maximum efficiency of $32.6 \%$. As we can see the cruve is very flat at its peak and therefore the distance between the two sensors does not have to be very precise. Looking at the graph somewhere at $300m \pm 50m$ should be fine and yields only very small differences in the efficiency of the experiment. 
+With spread $= 0$ and $n = 100000$ we get the following result:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}
