@@ -34,7 +34,7 @@ In order to simulate the decay, we created a Monte Carlo simulation in python. B
 This is how the decay looks like from the two different lab frames:
 ![Decay in K<sup>+</sup> and lab frame](https://raw.githubusercontent.com/RononDex/DAProject/master/K2Pi/Frames.png)
 Where the angles θ and φ are uniformly spread between 0 to π for θ, and 0 to 2π for φ for all the decays.
-The time that the kaon needs to decay is calculated by creating a contineous random number which is distributed exponentially using the following code: 
+The time that the kaon needs to decay is calculated by creating a continious random number which is distributed exponentially using the following code: 
 ```python
 vlen= np.array(stats.expon.rvs(loc=0, scale=tau, size=1))
 ```
