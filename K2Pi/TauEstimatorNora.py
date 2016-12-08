@@ -16,7 +16,7 @@ frac_pi=0.84                                #fraction of the pions in the beam
 
 bns = 100    
 n_tot, b = np.histogram(data, bins=bns)     #histogram of given data
-x=b+(max(b)-min(b))/200                     #center of bins
+x=b+(max(b)-min(b))/(2*bns)                     #center of bins
 x=x[:-1] 
 
 N=100
