@@ -13,7 +13,7 @@ The experiment, which is called K2Pi, analyses the decay of positively charged k
 
 ![Experiment setup](https://raw.githubusercontent.com/RononDex/DAProject/master/K2Pi/ExperimentSetup.jpg)
 
-As we can see, we have a collimator which generates a beam of K<sup>+</sup> particels. Furthermore, we have two detectors placed at a certain distance from each other along the flight path of the K<sup>+</sup>. The first detector is called the "Upstream detector" and measures the direction and the momentum of the Kaons in the beam: The second detector, called "Downstream detector", is composed of a tracking detector to detect the π<sup>+</sup> and a calorimeter to measure the π<sup>0</sup>.
+As we can see, we have a collimator which generates a beam of K<sup>+</sup> particles. Furthermore, we have two detectors placed at a certain distance from each other along the flight path of the K<sup>+</sup>. The first detector is called the "Upstream detector" and measures the direction and the momentum of the Kaons in the beam: The second detector, called "Downstream detector", is composed of a tracking detector to detect the π<sup>+</sup> and a calorimeter to measure the π<sup>0</sup>.
 
 However, the pions also have an average lifetime which is given by τ<sub>π</sub> = 2.6 * 10<sup>-8</sup>s. This gives us an average travel distance of Beta\*Gamma\*c\*τ<sub>π</sub> = 4.188km before a pion decays on average.
 
