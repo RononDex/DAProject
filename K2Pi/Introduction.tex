@@ -1,0 +1,56 @@
+\documentclass[11pt]{report}
+\usepackage{amsmath,times}
+\usepackage{amssymb}
+\usepackage[pdftex]{graphicx}
+\usepackage{subfigure,amsfonts}
+\usepackage{array,tabularx}
+\usepackage{epstopdf}
+\usepackage{float}
+\usepackage{listings}
+\usepackage{color}
+
+\newpage
+
+\begin{document}
+
+\section*{Introduction}
+
+This is the report for the K2Pi assignement for the data analysis project. In this report we will document our results and how we got to said results.
+
+The project is a collaboration effort between Nora Salgo, Tino Heuberger, Manuel Sommerhalder, Stefan Hochrein and Anar Bold
+
+\subsection*{The experiment}
+
+The experiment, which is called K2Pi, analyses the decay of positively charged kaons $K^+$ into one positively charged and one neutral pion ($\pi^+$ and a $\pi^0$), where the lifetime of a $K^+$ can be determined by analysing the data from an earlier experiment called LifeK.
+
+\begin{figure}[h] 
+\centering
+\includegraphics[width=0.75\textwidth]{ex_setup.png} 
+\caption{Experimental setup}
+\label{fig:Zee}    
+\end{figure}
+
+As we can see, we have a collimator which generates a beam of $K^+$ particles. Furthermore, we have two detectors placed at a certain distance from each other along the flight path of the $K^+$. The first detector is called the "Upstream detector" and measures the direction and the momentum of the Kaons in the beam: The second detector, called "Downstream detector", is composed of a tracking detector to detect the $\pi^+$ and a calorimeter to measure the $\pi^0$.
+\\
+\\
+However, the pions also have an average lifetime which is given by $\tau_{\pi^+} = 2.6 \cdot 10^{-8}s$. This gives us an average travel distance of $\beta \gamma c\tau_{\pi^+} = 4.188km$ before a pion decays on average.
+
+For the purpose of the project we were told to assume that the $\pi^+$ is stable and does not decay during the process. We now have to create a simulation to simulate this decay, and find the optimum distance between the two detectors to capture as many events as possible, where a succesful event is considered the detection of both pions corresponding to the same kaon decay. In the first part of the simulation, we will assume a stream that has no spread and moves exactly on the z-axis. For the second part we will add a spread to the stream coming from the collimator following a Gaussian distribution.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}
