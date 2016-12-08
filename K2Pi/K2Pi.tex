@@ -217,7 +217,13 @@ sorting=none
 	
 	\section{Simulation of the Kaon Decay} \label{sec:kdecay}
 	
-	At first, we defined a function that returns the position vector $P_{decay}$ of one single kaon decay in Cartesian coordinates and its two deflection angles with respect to the z-axis. These angles ($\alpha$ in x-direction and $\beta$ in y-direction) are random variables following a Gaussian distribution with $\mu$ = 0 and $\sigma_x$ = $\sigma_y$ = 1 mrad. The modulus is also a random variable but follows an exponential distribution with $\tau$ = $\tau_{K^+}$, which was derived in the first part of the assignment.
+	At first, we defined a function that returns the position vector $P_{decay}$ of one single kaon decay in Cartesian coordinates and its two deflection angles with respect to the z-axis. These angles ($\alpha$ in x-direction and $\beta$ in y-direction) are random variables following a Gaussian distribution with $\mu$ = 0 and $\sigma_x$ = $\sigma_y$ = 1 mrad. With $\alpha$ and $\beta$ the direction of $P_{decay}$ in cartesian coordinates can be calculated by trigonometric coherences:
+\begin{align*}
+x &= \frac{\tan{\alpha} \cdot cos{\beta}}{1+\tan{\alpha}^2 \cdot \cos{\beta}^2}\\
+y &= \sqrt{1-x^2} \cdot \sin{\beta}\\
+z &= \sqrt{1-x^2} \cdot \cos{\beta}\\
+\end{align*}
+The modulus is also a random variable but follows an exponential distribution with $\tau$ = $\tau_{K^+}$, which was derived in the first part of the assignment.
 	
 	For the actual $K^+$ decay into pions, we defined a function that simulates the decay in the $K^+$ rest frame and boosts the momentum 4-vectors to the lab frame.
 	First, it creates the direction vector of the $\pi^0$-momentum in the $K^+$ rest frame in standard spherical coordinates where the angle $\theta$ is a random variable, uniformly distributed in a range from 0 to $\pi$ and $\varphi$ is uniformly distributed in a range from 0 to 2$\pi$. 
