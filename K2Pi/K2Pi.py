@@ -2,6 +2,10 @@
 import numpy as np
 import scipy.stats as stats
 import matplotlib.pyplot as plt
+from threading import Thread
+import multiprocessing
+from multiprocessing.pool import ThreadPool
+import threading
 
 #Funktionen:
 
@@ -94,19 +98,62 @@ def GraficEvaluation(a_opt, SR_max, A, SR):			        #huebsche Darstellung der 
     plt.ylabel(r'Successrate [success/$n_{K+}$]')
     plt.show()
     
-def RunExperiment(sx, sy, E_K_0, E_K_plus, p, b, g, a_range, tau, n):   #Ausfuehrung des Experiments
+def RunExperiment(sx, sy, E_K_0, E_K_plus, p, b, g, a_range, tau, n, SR):   #Ausfuehrung des Experiments
+
     A = np.linspace(*a_range)
     decay = SimulateNDecays(sx, sy, tau, E_K_0, E_K_plus, p, b, g, n)
+
     P_lab_0, P_lab_plus, dp = decay[0], decay[1], decay[2]
-    SR = []
     for a in A:
-        SR.append(successrate(P_lab_0, P_lab_plus, dp, a, n))
+        if (a > len(SR) -1):
+            continue
+        if SR[int(a)] == 0:
+            SR[int(a)] = successrate(P_lab_0, P_lab_plus, dp, a, n)
+        else:
+            SR[int(a)] = np.mean([SR[int(a)], successrate(P_lab_0, P_lab_plus, dp, a, n)])
+   
+
+
+def RunExperimentMultiThreaded(sx, sy, E_K_0, E_K_plus, p, b, g, a_range, tau, n, enableMultiThreading):
+
+    if (enableMultiThreading):
+        number_of_cores = multiprocessing.cpu_count()
+        number_of_threads = number_of_cores
+        print("Running on %s cores, using %s threads" % (number_of_cores, number_of_threads))
+
+    decay = []
+    A = np.linspace(*a_range)
+    threads = []    
+    SR = [0] * (len(A))
+
+    # Use Multithreading to start as many threads as we have cores on this machine
+    if (enableMultiThreading):
+        # The amount of simulation runs every thread should do is n / number_of_threads
+        nThread = int(n / number_of_threads)
+
+        for i in range(number_of_cores):
+            # Create mew thread
+            t = Thread(target=RunExperiment, args = (sx, sy, E_K_0, E_K_plus, p, b, g, a_range, tau, nThread, SR))
+            t.start();
+            threads.append(t);
+
+    # If Multithreading turned off, just use the "normal" main thread
+    else:
+        RunExperiment(sx, sy, E_K_0, E_K_plus, p, b, g, a_range, tau, n, SR)    
+
+    # Wait for all threads to finish
+    for i in range(len(threads)):
+        if (threads[i].isAlive()):
+            threads[i].join()
+
     SR_max = max(SR)
     a_opt = 0
     for i in range(len(A)):
         if SR[i]==SR_max:
             a_opt = A[i]
+
     return a_opt, SR_max, SR, GraficEvaluation(a_opt, SR_max, A, SR)    #Ausgabe: optimale Detektorposition, maximale Erfolgsrate, Messdaten, Plot
+    
 
 #Parameter:
 
@@ -116,13 +163,16 @@ p = 205.14091 #MeV/c            #Impulsbetrag der Pionen (der selbe fuer beide)
 b = 0.99997833784995            #Betafaktor
 g = 151.92756392754             #Gammafaktor
 tau = 560                       #Mittlere Zerfallsstrecke von K+
-n = 300                         #Anzahl K+
+n = 10000                       #Anzahl K+
 a_range = [0,500,500]  		    #Anfangspunkt, Endpunkt, Anzahl Messungen
 sx = 1e-3			            #Standardabweichung xWinkel (alpha)
 sy = 1e-3   			        #Standardabweichung yWinkel (beta)
 
+enableMultiThreading = True     # Set to true to enable multithraeding, false to disable it
+
+
 #Auswertung:
-a_opt, SR_max, SR, f = RunExperiment(sx, sy, E_K_0, E_K_plus, p, b, g, a_range, tau, n)
+a_opt, SR_max, SR, f = RunExperimentMultiThreaded(sx, sy, E_K_0, E_K_plus, p, b, g, a_range, tau, n, enableMultiThreading)
 with open("data.txt", "w") as fh:               #Ausgabe der Messdaten in Datei
 	fh.write(str(SR))
 print('Optimale Position: ', a_opt)
