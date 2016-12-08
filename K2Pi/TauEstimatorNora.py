@@ -26,14 +26,15 @@ n_tot, b = np.histogram(data, bins=bns)     #histogram of given data
 x=b+(max(b)-min(b))/(2*bns)                 #center of bins
 x=x[:-1] 
 
-
+### Entry point for the estimator
 def startmultithreading(enableMultiThreading,N): 
+    # If Multi threading is enabled, check how many cores are available on this machine
     if (enableMultiThreading):
         number_of_cores = multiprocessing.cpu_count()
         number_of_threads = number_of_cores
         print("Running on %s cores, using %s threads" % (number_of_cores, number_of_threads))
 
-
+    # Setup all the variables we need for the simulation
     threads = []    
     liste=[]
 
@@ -43,17 +44,23 @@ def startmultithreading(enableMultiThreading,N):
         nThread = int(N / number_of_threads) # The amount of simulation runs every thread should do is n / number_of_threads
 
         for i in range(number_of_cores):
-            # Create mew thread
+            # Create the new thread and tell him what function to call with which parameters
+            # By giving the same reference to the result list "liste" we ensure that every thread appends 
+            # its results directly into this list
             t = Thread(target=runwiththreads, args = (nThread,liste))
             t.start();
             threads.append(t);
+            
+        # Wait for all threads to finish    
         for i in range(len(threads)):
             if (threads[i].isAlive()):
                 threads[i].join()
+                
+        #return the results
         return liste
 
 
-
+### This method that gets called by the threads and estimates nThread amount of decay lengths for tau
 def runwiththreads(nThread,tau_k_estimator):
     
     for i in range(nThread):
