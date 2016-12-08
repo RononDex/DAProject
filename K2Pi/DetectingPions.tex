@@ -1,0 +1,40 @@
+\documentclass[10pt,a4paper]{report}
+\usepackage[latin1]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\begin{document}
+\section{Detecting the Pions}
+
+Knowing the point $P_{decay}=(x_K,y_K,z_K)$  where the kaon decays and the directions $p_{\pi^+}=(x_{\pi^+},y_{\pi^+},z_{\pi^+})$ and $p_{\pi^0}=(x_{\pi^0},y_{\pi^0},z_{\pi^0})$ in which the pions fly after the decay we now can calculate if both $\pi$ are detected, by performing a linear combination. The condition is, that the z components of the points $P_{detect,\pi^+}$,$P_{detect,\pi^0}$ where the pions are detected, is equal to the z component of the position of our detector which we call a. This leads to the following equations:
+\begin{align*}
+a &= z_K + n_{\pi^+} \cdot z_{\pi^+} \\ 
+a &= z_K + n_{\pi^0} \cdot z_{\pi^0}
+\end{align*} 
+Solving for $n_{\pi^+}$ and  $n_{\pi^0}$ leads to: 
+\begin{align*}
+n_{\pi^+} &= (a-z_1)/z_{\pi^+}\\
+n_{\pi^0} &= (a-z_1)/z_{\pi^0}
+\end{equation}
+With these $n_{\pi^+}$ and $n_{\pi^0}$ the x and y coordinates of $P_{detect,\pi^+}$ and $P_{detect,\pi^0}$ can be calculated by:
+\begin{align*}
+x_{\pi^+} &= x_K+n_{\pi^+} \cdot x_{\pi^+}\\
+y_{\pi^+} &= y_K+n_{\pi^+} \cdot y_{\pi^+}\\
+x_{\pi^0} &= x_K+n_{\pi^0} \cdot x_{\pi^0}\\
+y_{\pi^0} &= y_K+n_{\pi^0} \cdot y_{\pi^0}\\
+\end{align*}
+Now the distance to the center of the detector of $P_{detect,\pi^+}$ and $P_{detect,\pi^0}$ can easily be calculated by:
+\begin{align*}
+d_{\pi^+} &= \sqrt{x_{\pi^+}^2 + y_{\pi^+}^2}\\
+d_{\pi^0} &= \sqrt{x_{\pi^0}^2 +  y_{\pi^0}^2} 
+\end{align*}
+Because the detector is symmetric around the z axis with radius $r=2m$ every decay with $d_{\pi^+}<=r$ and $d_{\pi^0}<=r$ can be rated as a success to detect them. Every decay with at least one of the pions not detected is rated as a failure. 
+If the z component of the kaon decay point is greater than a, and thus the $K^+$ decays after the detector, the event is obviously also rated as a failure. 
+
+\section{Run Experiment}
+Now being able to rate one event as success or failure the experiment can be performed. To save computing time, first a list of decay points is generated with corresponding lists of the directions of the $\pi^+$ and the $\pi^0$ as described in section Simulating Decay. 
+Then for every decay point with $\pi^0$ and $\pi^+$ directions, success or failure is determined as described in section Detecting the Pions. With this information a success rate for the lists can be calculated for a certain distance a (z component of the position of the detector). The success rate was simply calculated by the number of successes divided by the total number of trials. By varying the distance a, and calculating the success rate for each of its values the optimal position was determined.
+
+
+\end{document}
