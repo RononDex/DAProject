@@ -98,19 +98,19 @@ def GraficEvaluation(a_opt, SR_max, A, SR):			        #huebsche Darstellung der 
     plt.ylabel(r'Successrate [success/$n_{K+}$]')
     plt.show()
     
-def RunExperiment(sx, sy, E_K_0, E_K_plus, p, b, g, a_range, tau, n, SR):   #Ausfuehrung des Experiments
+def RunExperiment(sx, sy, E_K_0, E_K_plus, p, b, g, a_range, tau, n, SR, i):   #Ausfuehrung des Experiments
 
     A = np.linspace(*a_range)
     decay = SimulateNDecays(sx, sy, tau, E_K_0, E_K_plus, p, b, g, n)
 
     P_lab_0, P_lab_plus, dp = decay[0], decay[1], decay[2]
+    index = 0
     for a in A:
-        if (a > len(SR) -1):
-            continue
-        if SR[int(a)] == 0:
-            SR[int(a)] = successrate(P_lab_0, P_lab_plus, dp, a, n)
+        if SR[i][index] == 0:
+            SR[i][index] = successrate(P_lab_0, P_lab_plus, dp, a, n)
         else:
-            SR[int(a)] = np.mean([SR[int(a)], successrate(P_lab_0, P_lab_plus, dp, a, n)])
+            SR[i][index] = np.mean([SR[i][index], successrate(P_lab_0, P_lab_plus, dp, a, n)])
+        index = index + 1
    
 
 
@@ -124,7 +124,7 @@ def RunExperimentMultiThreaded(sx, sy, E_K_0, E_K_plus, p, b, g, a_range, tau, n
     decay = []
     A = np.linspace(*a_range)
     threads = []    
-    SR = [0] * (len(A))
+    SR = [ [0] * (len(A)) ] * number_of_cores
 
     # Use Multithreading to start as many threads as we have cores on this machine
     if (enableMultiThreading):
@@ -133,29 +133,37 @@ def RunExperimentMultiThreaded(sx, sy, E_K_0, E_K_plus, p, b, g, a_range, tau, n
 
         for i in range(number_of_cores):
             # Create mew thread
-            t = Thread(target=RunExperiment, args = (sx, sy, E_K_0, E_K_plus, p, b, g, a_range, tau, nThread, SR))
+            t = Thread(target=RunExperiment, args = (sx, sy, E_K_0, E_K_plus, p, b, g, a_range, tau, nThread, SR, i))
             t.start();
             threads.append(t);
 
     # If Multithreading turned off, just use the "normal" main thread
     else:
-        RunExperiment(sx, sy, E_K_0, E_K_plus, p, b, g, a_range, tau, n, SR)    
+        SR = [ [0] * (len(A)) ] * 1
+        RunExperiment(sx, sy, E_K_0, E_K_plus, p, b, g, a_range, tau, n, SR, 0)    
 
     # Wait for all threads to finish
     for i in range(len(threads)):
         if (threads[i].isAlive()):
             threads[i].join()
+        
+    avgSR = [0] * (len(A));
+    for i in range (len(A)):
+        values = []
+        for j in range(number_of_cores):
+            values.append(SR[j][i])
+        avgSR[i] = np.mean(values)
 
-    SR_max = max(SR)
+    SR_max = max(avgSR)
     a_opt = 0
     for i in range(len(A)):
-        if SR[i]==SR_max:
+        if avgSR[i]==SR_max:
             a_opt = A[i]
 
     print('Optimale Position: ', a_opt)
     print('Maximale Erfolgsrate: ', SR_max)
 
-    return a_opt, SR_max, SR, GraficEvaluation(a_opt, SR_max, A, SR)    #Ausgabe: optimale Detektorposition, maximale Erfolgsrate, Messdaten, Plot
+    return a_opt, SR_max, SR, GraficEvaluation(a_opt, SR_max, A, avgSR)    #Ausgabe: optimale Detektorposition, maximale Erfolgsrate, Messdaten, Plot
     
 
 #Parameter:
@@ -167,7 +175,7 @@ b = 0.99997833784995            #Betafaktor
 g = 151.92756392754             #Gammafaktor
 tau = 560                       #Mittlere Zerfallsstrecke von K+
 n = 10000                       #Anzahl K+
-a_range = [0,500,500]  		    #Anfangspunkt, Endpunkt, Anzahl Messungen
+a_range = [0,500,1000]  		    #Anfangspunkt, Endpunkt, Anzahl Messungen
 sx = 1e-3			            #Standardabweichung xWinkel (alpha)
 sy = 1e-3   			        #Standardabweichung yWinkel (beta)
 
