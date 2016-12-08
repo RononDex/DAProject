@@ -37,24 +37,24 @@
 %\usepackage[onehalfspacing]{setspace}
 
 \usepackage[
-			%includemp,				%marginalien in Textkörper einbeziehen
-			%includeall,
-			%showframe,				%zeigt rahmen zum debuggen		
-			marginparwidth=25mm, 	%breite der marginalien
-			marginparsep=5mm,		%abstand marginalien - text
-			reversemarginpar,		%marginalien links statt rechts
-			%left=50mm,				%abstand von Seitenraendern
+%includemp,				%marginalien in Textkörper einbeziehen
+%includeall,
+%showframe,				%zeigt rahmen zum debuggen		
+marginparwidth=25mm, 	%breite der marginalien
+marginparsep=5mm,		%abstand marginalien - text
+reversemarginpar,		%marginalien links statt rechts
+%left=50mm,				%abstand von Seitenraendern
 %			top=25mm,				%
 %			bottom=50mm,
-			]{geometry}		
+]{geometry}		
 
 %Bibliographie- Einstellungen
 \usepackage[babel,german=quotes]{csquotes}
 \usepackage[
-   backend=bibtex8, 
-   natbib=true,
-    style=numeric,
-    sorting=none
+backend=bibtex8, 
+natbib=true,
+style=numeric,
+sorting=none
 ]{biblatex}
 \bibliography{Quelle}
 %Fertig Bibliographie- Einstellungen
@@ -62,349 +62,349 @@
 \usepackage{hyperref}
 
 \newenvironment{conditions}
-  {\par\vspace{\abovedisplayskip}\noindent\begin{tabular}{>{$}l<{$} @{${}={}$} l}}
-  {\end{tabular}\par\vspace{\belowdisplayskip}}
+{\par\vspace{\abovedisplayskip}\noindent\begin{tabular}{>{$}l<{$} @{${}={}$} l}}
+	{\end{tabular}\par\vspace{\belowdisplayskip}}
 
 \begin{document}
-
-\begin{titlepage}
-\begin{figure}[h]
-\hfill
-\subfigure{\includegraphics[scale=0.04]{uzh}}
-\end{figure}
-\vspace{1 cm}
-\textbf{\begin{huge}Data Analysis Project
-\end{huge}}\\
-\noindent\rule{\textwidth}{1.1 pt} \\
-
-\begin{Large}\textbf{Designing a Particle Physics Experiment}
-\end{Large}\\ 
-\normalsize 
-\par
-\begingroup
-\leftskip 0 cm
-\rightskip\leftskip
-\textbf{Module:}\\ PHY231 \\ \\
-\textbf{Lecturer:}\\ Olaf Steinkamp \\ \\
-\textbf{Assistants:}\\ Elena Graverini \& Andreas Weiden \\ \\
-\textbf{Students:}\\ Nora Salgo, Manuel Sommerhalder, Tino Heuberger, Anar Bold, Stefan Hochrein \\ \\
-\textbf{Date of the assignment:}\\ 09.12.2016 \\ \\
-\par
-\endgroup
-\clearpage
-
-
-
-\end{titlepage}
-
-
-%Start Layout
-\pagestyle{fancy}
-\fancyhead{} 
-\fancyhead[R]{\small \leftmark}
-\fancyhead[C]{\textbf{Designing a Particle Physics Experiment} } 
-\fancyhead[L]{\includegraphics[height=2\baselineskip]{uzh}}
-
-\fancyfoot{}
-\fancyfoot[R]{\small \thepage}
-\fancyfoot[L]{}
-\fancyfoot[C]{}
-\renewcommand{\footrulewidth}{0.4pt} 
-
-\addtolength{\headheight}{2\baselineskip}
-\addtolength{\headheight}{0.6pt}
-
-
-\renewcommand{\headrulewidth}{0.6pt}
-\renewcommand{\footrulewidth}{0.4pt}
-\fancypagestyle{plain}{				% plain redefinieren, damit wirklich alle seiten im gleichen stil sind (ausser titlepage)
-\pagestyle{fancy}}
-
-\renewcommand{\chaptermark}[1]{ \markboth{#1}{} } %Das aktuelle Kapitel soll nicht Gross geschriben und Nummeriertwerden
-
-\counterwithout{figure}{chapter}
-\counterwithout{table}{chapter}
-%Ende Layout
-
-%\tableofcontents
-
-\chapter{Introduction}
-
-This is the report for the K2Pi assignment for the data analysis project. In this report we will document our results and how we derived them.
-
-\subsection*{The experiment}
-
-The experiment, which is called K2Pi, analyses the decay of positively charged kaons $K^+$ into one positively charged and one neutral pion ($\pi^+$ and a $\pi^0$), where the lifetime of a $K^+$ can be determined by analysing the data from an earlier experiment called LifeK.
-
-\begin{figure}[h] 
-\centering
-\includegraphics[width=0.75\textwidth]{ExperimentSetup.jpg} 
-\caption{Experimental setup}
-\label{fig:1}    
-\end{figure}
-
-As we can see, we have a collimator which generates a beam of $K^+$ particles. Furthermore, we have two detectors placed at a certain distance from each other along the flight path of the $K^+$. The first detector is called the "Upstream detector" and measures the direction and the momentum of the kaons in the beam. The second detector, called "Downstream detector", is composed of a tracking detector to detect the $\pi^+$ and a calorimeter to measure the $\pi^0$.
-\\
-\\
-However, the pions also have an average lifetime which is given by $\tau_{\pi^+} = 2.6 \cdot 10^{-8}s$. This results in an average decay length of $\beta \gamma c\tau_{\pi^+} = 4.188$km.
-
-For the purpose of the project we've been told to assume that the $\pi^0$ is stable and does not decay during the process. We now have to create a simulation to simulate this decay and find the optimum distance between the two detectors in order to capture as many events as possible, where a successful event is considered the detection of both pions corresponding to the same kaon decay. In the first part of the simulation, we will assume a stream that has no spread and moves exactly on the z-axis. For the second part we will add a spread to the stream coming from the collimator following a Gaussian distribution.
-
-\clearpage
-
-\chapter{Lifetime}
-
-In order to estimate the average decay length of the kaon we used the data of an earlier experiment called LifeK, which used the same beam line and the same beam momentum as the K2Pi experiment. In the LifeK experiment, the beam was composed of $84\%$ positively charged pions $\pi^+$ and $16\%$ kaons $K^+$. In total there are $100`000$ measurements of decay lengths of the particles. This means the data from the LifeK experiment corresponds to a convolution of two exponential distributions with the parameters $\tau_{\pi^+}$ and $\tau_{K^+}$, the average decay length of the two particle, and two normalization constants, which correspond to the number of each particle. The probability for a kaon to decay at the point x is given by the following equation.
-\begin{equation}
-\label{convolutedDistribution}
-P(x)=  \frac{n_{\pi^+}}{\tau_{\pi^+}} \cdot e^{-x/ \tau_{pi^+}} + \frac{n_{K^+}}{\tau_{K^+}} \cdot e^{-x/ \tau_{K^+}}
-\end{equation} 
-We already know three of those parameters:
-\begin{align*}
-n_{\pi^+} &= 84`000 \\
-n_{K^+} &= 16`000 \\
-\tau_{\pi^+} &= 4188 m
-\end{align*}
-In order to find the average decay length of the kaon we tried two different methods.\\
-First, we estimated $\tau_{K^+}$ directly from the given data with the scipy.optimizer.curvefit where we fitted the function given by equation \ref{convolutedDistribution}. We left all four parameters of the equation as independent variables, but initialized them at the expected value, and bound them in reasonable bounds. In order to have an idea what to expect for the average decay length of the kaon we calculated the average decay length $\tau_{K^+}= \gamma \beta \omega_{K^+}$ where $\beta$ and $\gamma$ is calculated in section \ref{sec:gammabeta} and $\omega_{K^+}$ is the average lifetime of the kaon, which is $(1.2379 \pm 0.0021) \times 10^{-8} s $ according to the particle data group\footnote{\url{http://pdg.lbl.gov/2016/listings/rpp2016-list-K-plus-minus.pdf}, Page 2, 2016}. For the expected decay length value of the kaon we obtain $\tau_{K^+} = 563.7$ m.
-
-
-
-This method leads to the following result:\\
-\begin{tabular}{c|cc}
-\centering
- & Estimated Value  & Uncertainty \\ 
-\hline 
-$\hat{\tau}_{K^+}$ & 577 m & 6 m \\ 
-
-$\hat{\tau}_{\pi^+}$ & 41890 m  & 21 m  \\
-
-${n_{\pi^+}}/{n_{K^+}}$ & 0.697 & 0.0066 \\ 
-
-$n_{K^+}$ & 12375 & 63 \\
-\end{tabular} 
-
-In comparison with the expected value of $563.7$ m, the estimated $\tau_{K^+}$ is quite reasonable. But since all other parameters are independent, they differ from our initial assumption.
-\\
-\\
-For the second method to estimate $\tau_{K^+}$ we separated the two exponential distribution using a Monte Carlo method to simplify the fit function. We represented the data of LifeK in a histogram with 100 bins. We simulated an exponential distribution with a scale of $\tau_{\pi^+}$ and represented the simulated data in a histogram, using the same bins as before. We subtracted the values of the two histograms to get the distribution of the kaon. To estimate the average decay length, we used the Maximum-Likelihood Method. To estimate the uncertainty we repeat the Maximum-Likelihood Method N (=1`000) times in order to calculate the mean value of $\hat{\tau}_{K^+}$. The uncertainty $m_{\tau}$ can thus be determined using the standard deviation $\sigma_{\hat{\tau}}$.
-\begin{align*}
-\hat{\tau}_{K^+}&= \frac{\sum_{i=1}^{100} (x_i \cdot n_i)}{\sum_{i=1}^{100} n_i}\\
-m_{\hat{\tau}}&= \frac{\sigma_{\hat{\tau}}}{\sqrt{N}}
-\end{align*}
-The results are:
-\begin{align*}
-\hat{\tau}_{K^+}&=578.x m \\
-m_{\hat{\tau}}&=2.4 m
-\end{align*}
-
-\begin{figure}[htbp] 
-\centering
-\includegraphics[width=0.7\textwidth]{hist_tau_estimator3.jpg}
-\caption{Gaussian distribution of $\hat{\tau}_{K^+}$ estimator}
-\label{fig:Bild1}
-\end{figure}
-
-We decided to use the results of the second method because of the following reasons. The uncertainty of the second method is significantly smaller. With the first method we used a predefined function, where we had no transparency on exactly what was computed, whereas with the second method we understood every step. Thirdly, we were not able to explain the change of the independent variables. 
-
-\clearpage
-
-
-\chapter{Experimental Strategy}
-
-
-We split the $K^+$ decay process and its detection in several distinct parts.
-
-\section{Simulation of the Kaon Decay} \label{sec:kdecay}
-
-At first, we defined a function that returns the position vector $P_{decay}$ of one single kaon decay in Cartesian coordinates and its two deflection angles with respect to the z-axis. These angles ($\alpha$ in x-direction and $\beta$ in y-direction) are random variables following a Gaussian distribution with $\mu$ = 0 and $\sigma_x$ = $\sigma_y$ = 1 mrad. The modulus is also a random variable but follows an exponential distribution with $\tau$ = $\tau_{K^+}$, which was derived in the first part of the assignment.
-
-For the actual $K^+$ decay into pions, we defined a function that simulates the decay in the $K^+$ rest frame and boosts the momentum 4-vectors to the lab frame.
- First, it creates the direction vector of the $\pi^0$-momentum in the $K^+$ rest frame in standard spherical coordinates where the angle $\theta$ is a random variable, uniformly distributed in a range from 0 to $\pi$ and $\varphi$ is uniformly distributed in a range from 0 to 2$\pi$. 
-\begin{figure}[htbp] 
-\centering
-\includegraphics[width=0.75\textwidth]{Frames.png} 
-\caption{$K^+$ into $\pi^0$ and $\pi^+$ in rest frame and in lab frame}
-\label{fig:2}    
-\end{figure}
-From this follows the momentum vector $p^*_{\pi^0}$ of the $\pi^0$ by translating to Cartesian coordinates and multiplying the expected modulus $|p^*_{\pi}|$ of the $\pi$ momentum computed in section \ref{sec:gammabeta}. The corresponding $\pi^+$ momentum vector $p^*_{\pi^+}$ is derived by changing the sign since the pions are assumed to be produced isotropically with back-to-back momentum and from momentum conservation follows that their modulus needs to be equal. 
-\begin{equation}
-p^*_{\pi^0} = |p^*_{\pi}| \cdot \begin{bmatrix}
-\sin\theta \cdot \cos\varphi \\ \sin\theta \cdot \sin\varphi \\ \cos\theta
-\end{bmatrix}
-, \quad \quad p^*_{\pi^+} = -p^*_{\pi^0}
-\end{equation}
-The corresponding energy values $E^*_{\pi}$, also computed in section \ref{sec:gammabeta}, are amended in order to represent the data as momentum 4-vectors $P^*_{\pi}$  prevalent in special relativity. These vectors are then boosted to the lab frame by multiplying them with the matrix representation of Lorentz boost in the z'-direction whose $\beta$- and $\gamma$-factors are computed in section \ref{sec:pE}.
-\begin{equation}
-P_{\pi} = 
-\begin{bmatrix}
-E_{\pi} \\ p_{\pi,x'} \\ p_{\pi,y'} \\ p_{\pi,z'}
-\end{bmatrix}
-=
-\begin{bmatrix}
-\gamma & 0 & 0 & \beta \gamma \\
-0 & 1 & 0 & 0 \\
-  0 & 0 & 1 & 0\\
-  \beta \gamma & 0 & 0 & \gamma \\
-\end{bmatrix}
-\cdot
-\begin{bmatrix}
-E_{\pi}^* \\ p_{\pi,x'}^* \\ p_{\pi,y'}^* \\ p_{\pi,z'}^*
-\end{bmatrix} = P^*_{\pi}
-\end{equation}
-The z'-axis here corresponds to the direction of the $K^+$-velocity which is only equivalent to the z-axis of the lab frame in case of an idealized non deflected $K^+$-beam. The three momentum components in the x'-, y'-, and z'-direction of the resulting 4-vectors in the lab frame are thus rotated by the angles $\alpha$ around the y-axis and $\beta$ around the x-axis by multiplying them by the corresponding rotation matrices:
-\begin{equation}
-\begin{bmatrix}
-p_{\pi,x} \\ p_{\pi,y} \\ p_{\pi,z}
-\end{bmatrix}
-=
-\begin{bmatrix}
-1 &   0         & 0           \\
-0 & \cos \beta & -\sin \beta \\
-0 & \sin \beta &  \cos \beta
-\end{bmatrix}
-\cdot
-\begin{bmatrix}
-\cos \alpha  & 0 & \sin \alpha \\
-   0         & 1 &  0          \\
--\sin \alpha & 0 & \cos \alpha
-\end{bmatrix}
-\cdot
-\begin{bmatrix}
-p_{\pi,x'} \\ p_{\pi,y'} \\ p_{\pi,z'}
-\end{bmatrix}
-\end{equation}
-
-\clearpage
-
-
-\section{Pion Detection} \label{sec:pdetection}
-
-Knowing the point $P_{decay}=(x_K,y_K,z_K)$  where the kaon decays and the directions $\vec{e}_{\pi^+}=(x_{\pi^+},y_{\pi^+},z_{\pi^+})$ and $\vec{e}_{\pi^0}=(x_{\pi^0},y_{\pi^0},z_{\pi^0})$ in which the pions fly after the decay (derived from the momentum vectors $p_{\pi}$), we can now determine if both $\pi$ are detected by performing a linear combination. The condition is that the z components of the points $P_{detect,\pi^+}$,$P_{detect,\pi^0}$, where the pions are detected, are equal to the z components of the position of our detector, which we call $a$. This leads to the following equations:
-\begin{align*}
-a &= z_K + n_{\pi^+} \cdot z_{\pi^+} \\ 
-a &= z_K + n_{\pi^0} \cdot z_{\pi^0}
-\end{align*} 
-Solving for $n_{\pi^+}$ and  $n_{\pi^0}$ leads to: 
-\begin{align*}
-n_{\pi^+} &= (a-z_1)/z_{\pi^+}\\
-n_{\pi^0} &= (a-z_1)/z_{\pi^0}
-\end{align*}
-With these $n_{\pi^+}$ and $n_{\pi^0}$ the x and y coordinates of $P_{detect,\pi^+}$ and $P_{detect,\pi^0}$ can be calculated by:
-\begin{align*}
-x_{\pi^+} &= x_K+n_{\pi^+} \cdot x_{\pi^+}\\
-y_{\pi^+} &= y_K+n_{\pi^+} \cdot y_{\pi^+}\\
-x_{\pi^0} &= x_K+n_{\pi^0} \cdot x_{\pi^0}\\
-y_{\pi^0} &= y_K+n_{\pi^0} \cdot y_{\pi^0}\\
-\end{align*}
-Now the distance to the center of the detector of $P_{detect,\pi^+}$ and $P_{detect,\pi^0}$ can easily be calculated by:
-\begin{align*}
-d_{\pi^+} &= \sqrt{x_{\pi^+}^2 + y_{\pi^+}^2}\\
-d_{\pi^0} &= \sqrt{x_{\pi^0}^2 +  y_{\pi^0}^2} 
-\end{align*}
-Because the detector is radially symmetric around the z-axis with radius $r=2m$, every decay with $d_{\pi^+} \leq r$ and $d_{\pi^0} \leq r$ can be rated as a success. Every decay with at least one of the corresponding pions not detected is rated as a failure. 
-If the z component of the kaon decay point is greater than $a$ and thus the $K^+$ decays after the detector, the event is obviously also rated as a failure. The fact that also the $\pi^+$ decay after a certain time was neglected, because the decay length $\tau_{\pi^+}$ is very large compared to its travelling distance to the detector.
-
-\clearpage
-
-
-\section{Run Experiment}
-
-Now being able to rate one event as either success or failure, the experiment can be performed. In order to save computing time and also to ensure maximum comparability among different detector positions, a list of $n$ decay points is generated first with corresponding flight directions of the $\pi^+$ and the $\pi^0$ as described in section \ref{sec:kdecay}. Also an array of $N$ different detector positions $a_k$ is created. Then for every position $a_k$, the number of successfully detected decays is counted as described in section \ref{sec:pdetection} and divided by the number of initially generated kaons. This success rate is plotted for every detector position $a_k$ and the position where the success rate is maximal is considered the optimum detector position. The final code is capable of running both parts of the assignment. For the idealized $K^+$-beam in the z-direction, the input parameters for $\sigma_x$ and $\sigma_y$ just need to be set equal to zero,  which results in the deflection angles $\alpha = 0$ and $\beta = 0$ and therefore no deflection at all.
-
-\clearpage
-
-
-\chapter{Conclusion}
-
-The higher the number of iterations for the $\tau$ estimation and the $K^+$ decay simulation, the more accurate the results become. 
-Also, we expected that the difference between the simulation with and without the spread at the collimator should be quite noticeable. The success rate becomes smaller when spreading is enabled and the whole graph gets “shifted” to the right, increasing the optimal distance between the two sensors. 
-With the multithreaded enabled python script “K2Pi.py”, we could simulate the decay for large n quite easily. This is the result for $n = 100000$ with a spread of $\sigma_x=\sigma_y=1$ mrad:
-
-\begin{figure}[h] 
-\centering
-\includegraphics[width=0.7\textwidth]{Simulation100kWithSpread.png} 
-\caption{The different detector positions plotted against the corresponding success rate with a Gaussian deflection}   
-\end{figure}
-
-Where the optimum distance is at 295.8 m with a maximum efficiency of 32.6\%. As one can see, the curve is very flat at its peak and therefore the distance between the two sensors does not need to be very precise. Looking at the graph if a range of $(290 \pm 50)$ m the variation of the position yields only very small differences in the efficiency of the experiment.
-
-With spread = 0 and $n = 100000$ we obtain the following result:
-
-\begin{figure}[h] 
-\centering
-\includegraphics[width=0.7\textwidth]{Simulation100kNoSpread.png} 
-\caption{The different detector positions plotted against the corresponding success rate without deflection}   
-\end{figure}
-
-The optimum efficiency is achieved if we place the two sensors at a distance of 285.3 m, where the efficiency lies at 33.7\%. Again, we observe that the curve is very flat at its peak. 
-
-This also confirms our expectation, that with no spread we get a higher maximum efficiency and a shorter optimal distance between the two sensors.
-\\
-\\
-\\
-These results show clearly that the 300 m long experiment hall, available for K2Pi is long enough for the experiment. Moreover the neglected fact, that also the $\pi^+$ decay, would "shift" the curve to the left. So the best place for the down stream detector would most likely be even closer to the upstream detector. 
-\clearpage
-
-\chapter{Physical Calculations}
-
-\section{Kaon relativistic $\gamma$- and $\beta$-factor} \label{sec:gammabeta}
-
-We are given the momentum of the $K^+$: $p_{K^+} = 75 GeV/c$\\
-From this we can find the velocity of the $K^+$ by the formula:
-\begin{align*}
-p_{K^+} = \gamma \cdot m_{0K^+} \cdot v
-\end{align*}
-$\Rightarrow$
-$v/c = \beta = 0.99997834$ ;
-$\gamma = 151.92448660$\\
-
-\section{Pion Momentum and Energy} \label{sec:pE}
-
-The decay products are produced isotropically, so the momenta of the decay products are equal in modulus and are in opposite direction. 
-So in the $K^+$ rest frame the momenta are conserved:
-\begin{align*}
-\overrightarrow{p}_{K^+} = \overrightarrow{p}_{\pi^0} + \overrightarrow{p}_{\pi^+} = 0
-\end{align*}
-
-In modulus:
-\begin{align*}
-|p^*_{\pi^0}| = |p^*_{\pi^+}| =: |p^*_{\pi}|
-\end{align*}
-
-The decay obeys the law of energy conservation in the $K^+$ rest frame:
-\begin{align*}
-E^*_{K^+} = E^*_{\pi^0} + E^*_{\pi^+}
-\end{align*}
-
-$\Rightarrow$
-\begin{align*}
-m_{0K^+}c^2 = \sqrt{|p^*_{\pi}|^2c^2 + m_{0\pi^0}^2c^4} + \sqrt{|p^*_{\pi}|^2c^2 + m_{0\pi^+}^2c^4}
-\end{align*}
-
-Using following rest masses from Wikipedia we found the results:
-\begin{align*}
-m_{0\pi^0} = 134.9766 MeV/c^2\\
-m_{0\pi^+} = 139.5702 MeV/c^2\\
-m_{0K^+} = 493.677 MeV/c^2
-\end{align*}
-
-For the momentum of the pions we receive:
-
-\begin{align*}
-|p^*_{\pi}| = 205.138 MeV/c
-\end{align*}
-
-The total energy of the pions are calculated by the following formula:
-\begin{align*}
-E_{\pi^0}^* = \sqrt{|p^*_{\pi}|^2c^2 + m_{0\pi^0}^2c^4} = 245.5611565 MeV\\
-E_{\pi^+}^* = \sqrt{|p^*_{\pi}|^2c^2 + m_{0\pi^+}^2c^4}= 248.115779 MeV
-\end{align*}
-
-
-\clearpage  
-
-%\renewcommand{\bibname}{Quellenverzeichnis}
-%\printbibliography
-
+	
+	\begin{titlepage}
+		\begin{figure}[h]
+			\hfill
+			\subfigure{\includegraphics[scale=0.04]{uzh}}
+		\end{figure}
+		\vspace{1 cm}
+		\textbf{\begin{huge}Data Analysis Project
+		\end{huge}}\\
+		\noindent\rule{\textwidth}{1.1 pt} \\
+		
+		\begin{Large}\textbf{Designing a Particle Physics Experiment}
+		\end{Large}\\ 
+		\normalsize 
+		\par
+		\begingroup
+		\leftskip 0 cm
+		\rightskip\leftskip
+		\textbf{Module:}\\ PHY231 \\ \\
+		\textbf{Lecturer:}\\ Olaf Steinkamp \\ \\
+		\textbf{Assistants:}\\ Elena Graverini \& Andreas Weiden \\ \\
+		\textbf{Students:}\\ Nora Salgo, Manuel Sommerhalder, Tino Heuberger, Anar Bold, Stefan Hochrein \\ \\
+		\textbf{Date of the assignment:}\\ 09.12.2016 \\ \\
+		\par
+		\endgroup
+		\clearpage
+		
+		
+		
+	\end{titlepage}
+	
+	
+	%Start Layout
+	\pagestyle{fancy}
+	\fancyhead{} 
+	\fancyhead[R]{\small \leftmark}
+	\fancyhead[C]{\textbf{Designing a Particle Physics Experiment} } 
+	\fancyhead[L]{\includegraphics[height=2\baselineskip]{uzh}}
+	
+	\fancyfoot{}
+	\fancyfoot[R]{\small \thepage}
+	\fancyfoot[L]{}
+	\fancyfoot[C]{}
+	\renewcommand{\footrulewidth}{0.4pt} 
+	
+	\addtolength{\headheight}{2\baselineskip}
+	\addtolength{\headheight}{0.6pt}
+	
+	
+	\renewcommand{\headrulewidth}{0.6pt}
+	\renewcommand{\footrulewidth}{0.4pt}
+	\fancypagestyle{plain}{				% plain redefinieren, damit wirklich alle seiten im gleichen stil sind (ausser titlepage)
+		\pagestyle{fancy}}
+	
+	\renewcommand{\chaptermark}[1]{ \markboth{#1}{} } %Das aktuelle Kapitel soll nicht Gross geschriben und Nummeriertwerden
+	
+	\counterwithout{figure}{chapter}
+	\counterwithout{table}{chapter}
+	%Ende Layout
+	
+	%\tableofcontents
+	
+	\chapter{Introduction}
+	
+	This is the report for the K2Pi assignment for the data analysis project. In this report we will document our results and how we derived them.
+	
+	\subsection*{The experiment}
+	
+	The experiment, which is called K2Pi, analyses the decay of positively charged kaons $K^+$ into one positively charged and one neutral pion ($\pi^+$ and a $\pi^0$), where the lifetime of a $K^+$ can be determined by analysing the data from an earlier experiment called LifeK.
+	
+	\begin{figure}[h] 
+		\centering
+		\includegraphics[width=0.75\textwidth]{ExperimentSetup.jpg} 
+		\caption{Experimental setup}
+		\label{fig:1}    
+	\end{figure}
+	
+	As we can see, we have a collimator which generates a beam of $K^+$ particles. Furthermore, we have two detectors placed at a certain distance from each other along the flight path of the $K^+$. The first detector is called the "Upstream detector" and measures the direction and the momentum of the kaons in the beam. The second detector, called "Downstream detector", is composed of a tracking detector to detect the $\pi^+$ and a calorimeter to measure the $\pi^0$.
+	\\
+	\\
+	However, the pions also have an average lifetime which is given by $\tau_{\pi^+} = 2.6 \cdot 10^{-8}s$. This results in an average decay length of $\beta \gamma c\tau_{\pi^+} = 4.188$km.
+	
+	For the purpose of the project we've been told to assume that the $\pi^0$ is stable and does not decay during the process. We now have to create a simulation to simulate this decay and find the optimum distance between the two detectors in order to capture as many events as possible, where a successful event is considered the detection of both pions corresponding to the same kaon decay. In the first part of the simulation, we will assume a stream that has no spread and moves exactly on the z-axis. For the second part we will add a spread to the stream coming from the collimator following a Gaussian distribution.
+	
+	\clearpage
+	
+	\chapter{Lifetime}
+	
+	In order to estimate the average decay length of the kaon we used the data of an earlier experiment called LifeK, which used the same beam line and the same beam momentum as the K2Pi experiment. In the LifeK experiment, the beam was composed of $84\%$ positively charged pions $\pi^+$ and $16\%$ kaons $K^+$. In total there are $100`000$ measurements of decay lengths of the particles. This means the data from the LifeK experiment corresponds to a convolution of two exponential distributions with the parameters $\tau_{\pi^+}$ and $\tau_{K^+}$, the average decay length of the two particle, and two normalization constants, which correspond to the number of each particle. The probability for a kaon to decay at the point x is given by the following equation.
+	\begin{equation}
+		\label{convolutedDistribution}
+		P(x)=  \frac{n_{\pi^+}}{\tau_{\pi^+}} \cdot e^{-x/ \tau_{pi^+}} + \frac{n_{K^+}}{\tau_{K^+}} \cdot e^{-x/ \tau_{K^+}}
+	\end{equation} 
+	We already know three of those parameters:
+	\begin{align*}
+		n_{\pi^+} &= 84`000 \\
+		n_{K^+} &= 16`000 \\
+		\tau_{\pi^+} &= 4188 m
+	\end{align*}
+	In order to find the average decay length of the kaon we tried two different methods.\\
+	First, we estimated $\tau_{K^+}$ directly from the given data with the scipy.optimizer.curvefit where we fitted the function given by equation \ref{convolutedDistribution}. We left all four parameters of the equation as independent variables, but initialized them at the expected value, and bound them in reasonable bounds. In order to have an idea what to expect for the average decay length of the kaon, we calculated the average decay length $\tau_{K^+}= \gamma \beta \omega_{K^+}$, where $\beta$ and $\gamma$ are calculated in section \ref{sec:gammabeta} and where  $\omega_{K^+}$ is the average lifetime of the kaon. $\omega_{K^+}$ was already determined by the particle data group\footnote{\url{http://pdg.lbl.gov/2016/listings/rpp2016-list-K-plus-minus.pdf}, Page 2, 2016} and equals  $(1.2379 \pm 0.0021) \times 10^{-8} s $. For the expected decay length value of the kaon we obtain $\tau_{K^+} = 563.7$ m.
+	
+	
+	
+	This method leads to the following result:\\
+	\begin{tabular}{c|cc}
+		\centering
+		& Estimated Value  & Uncertainty \\ 
+		\hline 
+		$\hat{\tau}_{K^+}$ & 577 m & 6 m \\ 
+		
+		$\hat{\tau}_{\pi^+}$ & 41890 m  & 21 m  \\
+		
+		${n_{\pi^+}}/{n_{K^+}}$ & 0.697 & 0.0066 \\ 
+		
+		$n_{K^+}$ & 12375 & 63 \\
+	\end{tabular} 
+	
+	In comparison with the expected value of $563.7$ m, the estimated $\tau_{K^+}$ is quite reasonable. But since all other parameters are independent, they differ from our initial assumption.
+	\\
+	\\
+	For the second method, to estimate $\tau_{K^+}$, we separated the two exponential distribution using a Monte Carlo method to simplify the fit function. We plotted the data of LifeK in a histogram with 100 bins. We simulated an exponential distribution with a scale of $\tau_{\pi^+}$ and presented the simulated data in a histogram, using the same bins as before. We subtracted the values of the two histograms to get the distribution of the kaon. To estimate the average decay length, we used the Maximum-Likelihood Method. The uncertainty was determined by repeating the Maximum-Likelihood Method N (=1`000) times to calculate the mean value of $\hat{\tau}_{K^+}$. This uncertainty $m_{\tau}$ can thus be determined by using the standard deviation $\sigma_{\hat{\tau}}$.
+	\begin{align*}
+		\hat{\tau}_{K^+}&= \frac{\sum_{i=1}^{100} (x_i \cdot n_i)}{\sum_{i=1}^{100} n_i}\\
+		m_{\hat{\tau}}&= \frac{\sigma_{\hat{\tau}}}{\sqrt{N}}
+	\end{align*}
+	The results are:
+	\begin{align*}
+		\hat{\tau}_{K^+}&=578.x m \\
+		m_{\hat{\tau}}&=2.4 m
+	\end{align*}
+	
+	\begin{figure}[htbp] 
+		\centering
+		\includegraphics[width=0.7\textwidth]{hist_tau_estimator3.jpg}
+		\caption{Gaussian distribution of $\hat{\tau}_{K^+}$ estimator}
+		\label{fig:Bild1}
+	\end{figure}
+	
+	We decided to use the results of the second method because of the following reasons: The uncertainty on the second method is significantly smaller. For the first method we used a predefined function, where we had no transparency on what was computed, whereas with the second method we understood every step. Thirdly, we were not able to explain the change of the independent variables. 
+	
+	\clearpage
+	
+	
+	\chapter{Experimental Strategy}
+	
+	
+	We split the $K^+$ decay process and its detection in several distinct parts.
+	
+	\section{Simulation of the Kaon Decay} \label{sec:kdecay}
+	
+	At first, we defined a function that returns the position vector $P_{decay}$ of one single kaon decay in Cartesian coordinates and its two deflection angles with respect to the z-axis. These angles ($\alpha$ in x-direction and $\beta$ in y-direction) are random variables following a Gaussian distribution with $\mu$ = 0 and $\sigma_x$ = $\sigma_y$ = 1 mrad. The modulus is also a random variable but follows an exponential distribution with $\tau$ = $\tau_{K^+}$, which was derived in the first part of the assignment.
+	
+	For the actual $K^+$ decay into pions, we defined a function that simulates the decay in the $K^+$ rest frame and boosts the momentum 4-vectors to the lab frame.
+	First, it creates the direction vector of the $\pi^0$-momentum in the $K^+$ rest frame in standard spherical coordinates where the angle $\theta$ is a random variable, uniformly distributed in a range from 0 to $\pi$ and $\varphi$ is uniformly distributed in a range from 0 to 2$\pi$. 
+	\begin{figure}[htbp] 
+		\centering
+		\includegraphics[width=0.75\textwidth]{Frames.png} 
+		\caption{$K^+$ into $\pi^0$ and $\pi^+$ in rest frame and in lab frame}
+		\label{fig:2}    
+	\end{figure}
+	From this follows the momentum vector $p^*_{\pi^0}$ of the $\pi^0$ by translating to Cartesian coordinates and multiplying the expected modulus $|p^*_{\pi}|$ of the $\pi$ momentum computed in section \ref{sec:gammabeta}. The corresponding $\pi^+$ momentum vector $p^*_{\pi^+}$ is derived by changing the sign since the pions are assumed to be produced isotropically with back-to-back momentum and from momentum conservation follows that their modulus needs to be equal. 
+	\begin{equation}
+		p^*_{\pi^0} = |p^*_{\pi}| \cdot \begin{bmatrix}
+			\sin\theta \cdot \cos\varphi \\ \sin\theta \cdot \sin\varphi \\ \cos\theta
+		\end{bmatrix}
+		, \quad \quad p^*_{\pi^+} = -p^*_{\pi^0}
+	\end{equation}
+	The corresponding energy values $E^*_{\pi}$, also computed in section \ref{sec:gammabeta}, are amended in order to represent the data as momentum 4-vectors $P^*_{\pi}$  prevalent in special relativity. These vectors are then boosted to the lab frame by multiplying them with the matrix representation of Lorentz boost in the z'-direction whose $\beta$- and $\gamma$-factors are computed in section \ref{sec:pE}.
+	\begin{equation}
+		P_{\pi} = 
+		\begin{bmatrix}
+			E_{\pi} \\ p_{\pi,x'} \\ p_{\pi,y'} \\ p_{\pi,z'}
+		\end{bmatrix}
+		=
+		\begin{bmatrix}
+			\gamma & 0 & 0 & \beta \gamma \\
+			0 & 1 & 0 & 0 \\
+			0 & 0 & 1 & 0\\
+			\beta \gamma & 0 & 0 & \gamma \\
+		\end{bmatrix}
+		\cdot
+		\begin{bmatrix}
+			E_{\pi}^* \\ p_{\pi,x'}^* \\ p_{\pi,y'}^* \\ p_{\pi,z'}^*
+		\end{bmatrix} = P^*_{\pi}
+	\end{equation}
+	The z'-axis here corresponds to the direction of the $K^+$-velocity which is only equivalent to the z-axis of the lab frame in case of an idealized non deflected $K^+$-beam. The three momentum components in the x'-, y'-, and z'-direction of the resulting 4-vectors in the lab frame are thus rotated by the angles $\alpha$ around the y-axis and $\beta$ around the x-axis by multiplying them by the corresponding rotation matrices:
+	\begin{equation}
+		\begin{bmatrix}
+			p_{\pi,x} \\ p_{\pi,y} \\ p_{\pi,z}
+		\end{bmatrix}
+		=
+		\begin{bmatrix}
+			1 &   0         & 0           \\
+			0 & \cos \beta & -\sin \beta \\
+			0 & \sin \beta &  \cos \beta
+		\end{bmatrix}
+		\cdot
+		\begin{bmatrix}
+			\cos \alpha  & 0 & \sin \alpha \\
+			0         & 1 &  0          \\
+			-\sin \alpha & 0 & \cos \alpha
+		\end{bmatrix}
+		\cdot
+		\begin{bmatrix}
+			p_{\pi,x'} \\ p_{\pi,y'} \\ p_{\pi,z'}
+		\end{bmatrix}
+	\end{equation}
+	
+	\clearpage
+	
+	
+	\section{Pion Detection} \label{sec:pdetection}
+	
+	Knowing the point $P_{decay}=(x_K,y_K,z_K)$  where the kaon decays and the directions $\vec{e}_{\pi^+}=(x_{\pi^+},y_{\pi^+},z_{\pi^+})$ and $\vec{e}_{\pi^0}=(x_{\pi^0},y_{\pi^0},z_{\pi^0})$ in which the pions fly after the decay (derived from the momentum vectors $p_{\pi}$), we can now determine if both $\pi$ are detected by performing a linear combination. The condition is that the z components of the points $P_{detect,\pi^+}$,$P_{detect,\pi^0}$, where the pions are detected, are equal to the z components of the position of our detector, which we call $a$. This leads to the following equations:
+	\begin{align*}
+		a &= z_K + n_{\pi^+} \cdot z_{\pi^+} \\ 
+		a &= z_K + n_{\pi^0} \cdot z_{\pi^0}
+	\end{align*} 
+	Solving for $n_{\pi^+}$ and  $n_{\pi^0}$ leads to: 
+	\begin{align*}
+		n_{\pi^+} &= (a-z_1)/z_{\pi^+}\\
+		n_{\pi^0} &= (a-z_1)/z_{\pi^0}
+	\end{align*}
+	With these $n_{\pi^+}$ and $n_{\pi^0}$ the x and y coordinates of $P_{detect,\pi^+}$ and $P_{detect,\pi^0}$ can be calculated by:
+	\begin{align*}
+		x_{\pi^+} &= x_K+n_{\pi^+} \cdot x_{\pi^+}\\
+		y_{\pi^+} &= y_K+n_{\pi^+} \cdot y_{\pi^+}\\
+		x_{\pi^0} &= x_K+n_{\pi^0} \cdot x_{\pi^0}\\
+		y_{\pi^0} &= y_K+n_{\pi^0} \cdot y_{\pi^0}\\
+	\end{align*}
+	Now the distance to the center of the detector of $P_{detect,\pi^+}$ and $P_{detect,\pi^0}$ can easily be calculated by:
+	\begin{align*}
+		d_{\pi^+} &= \sqrt{x_{\pi^+}^2 + y_{\pi^+}^2}\\
+		d_{\pi^0} &= \sqrt{x_{\pi^0}^2 +  y_{\pi^0}^2} 
+	\end{align*}
+	Because the detector is radially symmetric around the z-axis with radius $r=2m$, every decay with $d_{\pi^+} \leq r$ and $d_{\pi^0} \leq r$ can be rated as a success. Every decay with at least one of the corresponding pions not detected is rated as a failure. 
+	If the z component of the kaon decay point is greater than $a$ and thus the $K^+$ decays after the detector, the event is obviously also rated as a failure. The fact that also the $\pi^+$ decay after a certain time was neglected, because the decay length $\tau_{\pi^+}$ is very large compared to its travelling distance to the detector.
+	
+	\clearpage
+	
+	
+	\section{Run Experiment}
+	
+	Now being able to rate one event as either success or failure, the experiment can be performed. In order to save computing time and also to ensure maximum comparability among different detector positions, a list of $n$ decay points is generated first with corresponding flight directions of the $\pi^+$ and the $\pi^0$ as described in section \ref{sec:kdecay}. Also an array of $N$ different detector positions $a_k$ is created. Then for every position $a_k$, the number of successfully detected decays is counted as described in section \ref{sec:pdetection} and then normalised by dividing by the number of initially generated kaons $n$. This success rate is plotted for every detector position $a_k$ and the position where the success rate is maximal is considered the optimum detector position. The final code is capable of running both parts of the assignment. For the idealized $K^+$-beam in the z-direction, the input parameters for $\sigma_x$ and $\sigma_y$ just need to be set equal to zero,  which results in the deflection angles $\alpha = 0$ and $\beta = 0$ and therefore no deflection at all.
+	
+	\clearpage
+	
+	
+	\chapter{Conclusion}
+	
+	The higher the number of iterations for the $\tau$ estimation and the $K^+$ decay simulation, the more accurate the results become. 
+	Also, we expected that the difference between the simulation with and without the spread at the collimator should be quite noticeable. The success rate becomes smaller when spreading is enabled and the whole graph gets “shifted” to the right, increasing the optimal distance between the two sensors. 
+	With the multithreaded enabled python script “K2Pi.py”, we could simulate the decay for large $n$ quite easily. Here is the result for $n = 100000$ with a spreading of $\sigma_x=\sigma_y=1$ mrad:
+	
+	\begin{figure}[h] 
+		\centering
+		\includegraphics[width=0.7\textwidth]{Simulation100kWithSpread.png} 
+		\caption{The different detector positions plotted against the corresponding success rate with a Gaussian deflection}   
+	\end{figure}
+	
+	Where the optimum distance is found to be at 295.8 m with a maximum efficiency of 32.6\%. As one can see, the curve is very flat at its peak and therefore the distance between the two sensors does not need to be very precise. Looking at the graph if a range of $(290 \pm 50)$ m the variation of the position yields only very small differences in the efficiency of the experiment.
+	
+	With spread = 0 and $n = 100000$ we obtain the following result:
+	
+	\begin{figure}[h] 
+		\centering
+		\includegraphics[width=0.7\textwidth]{Simulation100kNoSpread.png} 
+		\caption{The different detector positions plotted against the corresponding success rate without deflection}   
+	\end{figure}
+	
+	The optimum efficiency is achieved when we place the two sensors at a distance of 285.3 m, where the efficiency lies at 33.7\%. Again, we observe that the curve is very flat at its peak. 
+	
+	This also confirms our expectation, that with no spreading we get a higher maximum efficiency and a shorter optimal distance between the two sensors.
+	\\
+	\\
+	\\
+	These results show clearly that the 300 m long experiment hall, available for K2Pi is long enough for the experiment. Moreover the neglected fact, that also the $\pi^+$ decay, would "shift" the curve to the left. So the best place for the down stream detector would most likely be even closer to the upstream detector. 
+	\clearpage
+	
+	\chapter{Physical Calculations}
+	
+	\section{Kaon relativistic $\gamma$- and $\beta$-factor} \label{sec:gammabeta}
+	
+	We are given the momentum of the $K^+$: $p_{K^+} = 75 GeV/c$\\
+	From this we can find the velocity of the $K^+$ by the formula:
+	\begin{align*}
+		p_{K^+} = \gamma \cdot m_{0K^+} \cdot v
+	\end{align*}
+	$\Rightarrow$
+	$v/c = \beta = 0.99997834$ ;
+	$\gamma = 151.92448660$\\
+	
+	\section{Pion Momentum and Energy} \label{sec:pE}
+	
+	The decay products are produced isotropically, so the momenta of the decay products are equal in modulus and are in opposite direction. 
+	So in the $K^+$ rest frame the momenta are conserved:
+	\begin{align*}
+		\overrightarrow{p}_{K^+} = \overrightarrow{p}_{\pi^0} + \overrightarrow{p}_{\pi^+} = 0
+	\end{align*}
+	
+	In modulus:
+	\begin{align*}
+		|p^*_{\pi^0}| = |p^*_{\pi^+}| =: |p^*_{\pi}|
+	\end{align*}
+	
+	The decay obeys the law of energy conservation in the $K^+$ rest frame:
+	\begin{align*}
+		E^*_{K^+} = E^*_{\pi^0} + E^*_{\pi^+}
+	\end{align*}
+	
+	$\Rightarrow$
+	\begin{align*}
+		m_{0K^+}c^2 = \sqrt{|p^*_{\pi}|^2c^2 + m_{0\pi^0}^2c^4} + \sqrt{|p^*_{\pi}|^2c^2 + m_{0\pi^+}^2c^4}
+	\end{align*}
+	
+	Using following rest masses from Wikipedia we found the results:
+	\begin{align*}
+		m_{0\pi^0} = 134.9766 MeV/c^2\\
+		m_{0\pi^+} = 139.5702 MeV/c^2\\
+		m_{0K^+} = 493.677 MeV/c^2
+	\end{align*}
+	
+	For the momentum of the pions we receive:
+	
+	\begin{align*}
+		|p^*_{\pi}| = 205.138 MeV/c
+	\end{align*}
+	
+	The total energy of the pions are calculated by the following formula:
+	\begin{align*}
+		E_{\pi^0}^* = \sqrt{|p^*_{\pi}|^2c^2 + m_{0\pi^0}^2c^4} = 245.5611565 MeV\\
+		E_{\pi^+}^* = \sqrt{|p^*_{\pi}|^2c^2 + m_{0\pi^+}^2c^4}= 248.115779 MeV
+	\end{align*}
+	
+	
+	\clearpage  
+	
+	%\renewcommand{\bibname}{Quellenverzeichnis}
+	%\printbibliography
+	
 \end{document}
