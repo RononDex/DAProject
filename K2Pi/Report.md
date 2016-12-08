@@ -24,12 +24,12 @@ We now have to create a simulation to simulate this decay, and find the optimum 
 
 ### Determining τ<sub>K<sup>+</sup></sub> from the given data
 The first part of the assignement is to determine the average lifetime of a K<sup>+</sup> particle. For this purpose, we are given the data from the earlier LifeK experiment listed in the file dec_lengths.dat that containing 100'000 measurements of K<sup>+</sup> particles and their decay length. Each row in that documents represents one measurements with the unit [meters].
-To create a best fit of the data, we created tauestimator.py which plots different functions against the data to find the best fit.
+To creat a best fit of the data, we created tauestimator.py which plots different functions against the data to find the best fit.
 ![Fitting the measurement from the experiment KLife](https://raw.githubusercontent.com/abold/DAProject/master/K2Pi/plot2.jpg)
 As we can see here, the function called "f1" is the best fit for the dataset. We can then use this function to determine the decay time τ<sub>K<sup>+</sup></sub> = 560m.
 
 ### Simulating the K<sup>+</sup> decay
-In order to simulate the decay, we created a Monte Carlo simulation in python. Basically, we simulate the collimator shooting one K<sup>+</sup> particle at a time and with τ<sub>K<sup>+</sup></sub> that we got from the first part of the assignement we can calculate when this particle should decay. When the kaon decays we generate the π<sup>0</sup> and the π<sup>+</sup> particle with random angles θ and φ in the K<sup>+</sup> restframe and calculate the repective angles in the lab frame (using a Lorentz boost, matrix multiplication). Since the detectors are given in the instructions to be circular with 4m in diameter, we can now easily calculate where the particles will be at z=[location of sensor]. If this location is within the 4m of the sensors diameter we have a positive event registration.
+In order to simulate the decay, we created a Monte Carlo simulation in python. Basically, we simulate the collimator shooting one K<sup>+</sup> particle at a time and with τ<sub>K<sup>+</sup></sub> that we got from the first part of the assignment we can calculate when this particle should decay. When the kaon decays we generate the π<sup>0</sup> and the π<sup>+</sup> particle with random angles θ and φ in the K<sup>+</sup> restframe and calculate the respective angles in the lab frame (using a Lorentz boost, matrix multiplication). Since the detectors are given in the instructions to be circular with 4m in diameter, we can now easily calculate where the particles will be at z=[location of sensor]. If this location is within the 4m of the sensors diameter we have a positive event registration.
 
 This is how the decay looks like from the two different lab frames:
 ![Decay in K<sup>+</sup> and lab frame](https://raw.githubusercontent.com/RononDex/DAProject/master/K2Pi/Frames.png)
@@ -44,13 +44,13 @@ After the decay happend, we just let the π<sup>+</sup> and π<sup>0</sup> flyin
 The simulation script "K2Pi.py" produces a plot where on the z axis those particles can be detected by the sensor and plots the amount of positive events for a given distance between the sensors, given that the first one is right in front of the collimator to pick up all the K<sup>+</sup>. This is the simulation with no spread applied at the collimator:
 ![Simulation with 300 K<sup>+</sup>, no spread](https://raw.githubusercontent.com/RononDex/DAProject/master/K2Pi/Simulation50NoSpread.png)
 
-The point where the most events get registered is marked in the plot, which in this case is at **250m** distance with a maximum efficency of **~30%**.
+The point where the most events get registered is marked in the plot, which in this case is at **250m** distance with a maximum efficiency of **~30%**.
 Note that every run of the simulation will produce a different result, since this process has (as explained above) an element of randomness in it, however the bigger the number of simulated K<sup>+</sup> the less the spread of the found optimal distances between the simulations get.
 
 Simulation with a spreading beam of K<sup>+</sup> at the collimator of 0.001:
 ![Simulation with 300 K<sup>+</sup>, with spread](https://raw.githubusercontent.com/RononDex/DAProject/master/K2Pi/Simulation50.png)
 
-As we can see, the results are a bit different. The optimal distance is determined to be **364m** with an effiency of **~35%**
+As we can see, the results are a bit different. The optimal distance is determined to be **364m** with an efficiency of **~35%**
 
 For the simulation we used the following parameters σ<sub>x</sub>=σ<sub>y</sub> = 1mrad:
  - E<sub>π<sup>0</sup></sub> = 245.563588 MeV     Energy of π<sup>0</sup> in K<sup>+</sup> rest frame
