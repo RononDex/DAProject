@@ -152,6 +152,9 @@ def RunExperimentMultiThreaded(sx, sy, E_K_0, E_K_plus, p, b, g, a_range, tau, n
         if SR[i]==SR_max:
             a_opt = A[i]
 
+    print('Optimale Position: ', a_opt)
+    print('Maximale Erfolgsrate: ', SR_max)
+
     return a_opt, SR_max, SR, GraficEvaluation(a_opt, SR_max, A, SR)    #Ausgabe: optimale Detektorposition, maximale Erfolgsrate, Messdaten, Plot
     
 
@@ -175,5 +178,3 @@ enableMultiThreading = True     # Set to true to enable multithraeding, false to
 a_opt, SR_max, SR, f = RunExperimentMultiThreaded(sx, sy, E_K_0, E_K_plus, p, b, g, a_range, tau, n, enableMultiThreading)
 with open("data.txt", "w") as fh:               #Ausgabe der Messdaten in Datei
 	fh.write(str(SR))
-print('Optimale Position: ', a_opt)
-print('Maximale Erfolgsrate: ', SR_max)
