@@ -1,25 +1,24 @@
-# K2pi
+# K2Pi
 
 ## Introduction
 
-This is the report for the K2pi assignement for the Datenanalyse project.
+This is the report for the K2Pi assignement for the data analysis project.
 In this report we will document our results and how we got to said results.
 
 The project is a collaboration effort between Nora Salgo, Tino Heuberger, Manuel Sommerhalder, Stefan Hochrein and Anar Bold
 
 ### The experiment
 
-The experiment, which is called K2Pi, analyses the decay of K<sup>+</sup> particles into π<sup>0</sup> and a π<sup>+</sup>
-Where the lifetime of a K<sup>+</sup> can be determined by analasying the data from anohter experiment called LifeK.
+The experiment, which is called K2Pi, analyses the decay of positively charged kaons (K<sup>+</sup>) into one positively charged and one neutral pion (π<sup>+</sup> and a π<sup>0</sup>), where the lifetime of a K<sup>+</sup> can be determined by analasying the data from an earlier experiment called LifeK.
 
 ![Experiment setup](https://raw.githubusercontent.com/RononDex/DAProject/master/K2Pi/ExperimentSetup.jpg)
 
-As we can see, we have a collimator which accelerates the K<sup>+</sup> particels and generates a stream of said particles. Further we have two detectors placed at a certain distance from each other along the flight path of the K<sup>+</sup>. The first detector is called the "Up stream detector" and measures the direction and the momentum of the Kaons from the stream: The second detector, called "Downstream detector", which is composed of a tracking detector to detect the π<sup>+</sup> and a calorimeter to measure the π<sup>0</sup>.
+As we can see, we have a collimator which generates a beam of K<sup>+</sup> particels. Furthermore, we have two detectors placed at a certain distance from each other along the flight path of the K<sup>+</sup>. The first detector is called the "Upstream detector" and measures the direction and the momentum of the Kaons in the beam: The second detector, called "Downstream detector", is composed of a tracking detector to detect the π<sup>+</sup> and a calorimeter to measure the π<sup>0</sup>.
 
-However the pions also have a decay time which is given by τ<sub>π</sub> = 2.6 * 10<sup>-8</sup>s, this gives us an average travel distance of Beta\*Gamma\*c\*τ<sub>π</sub> = 4.188km before a pion decays.
+However, the pions also have an average lifetime which is given by τ<sub>π</sub> = 2.6 * 10<sup>-8</sup>s. This gives us an average travel distance of Beta\*Gamma\*c\*τ<sub>π</sub> = 4.188km before a pion decays on average.
 
-For the purpose of the project we were told to assume that the π<sup>0</sup> is stable and does not decay.
-We now have to create a simulation to simulate this decay, and find the optimal distance between the two sensors to capture as many events as possible. In the first part of the simulation we will assume a stream that has no spread and moves exactly on the z-axis. For the second part we will add a spread to the stream coming from the colimator.
+For the purpose of the project we were told to assume that the π<sup>0</sup> is stable and does not decay during the process.
+We now have to create a simulation to simulate this decay, and find the optimum distance between the two detectors to capture as many events as possible, where a succesful event is considered the detection of both pions corresponding to the same kaon decay. In the first part of the simulation, we will assume a stream that has no spread and moves exactly on the z-axis. For the second part we will add a spread to the stream coming from the collimator following a Gaussian distribution.
 
 ## Results
 
