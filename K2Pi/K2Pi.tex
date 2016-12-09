@@ -11,7 +11,7 @@
 \usepackage{fancyhdr}
 \usepackage{amsmath}
 \usepackage{mdwlist} %Benötigt für Abstände in Aufzählungen zu löschen
-%\usepackage{here}
+\usepackage{here}
 \usepackage{calc}
 \usepackage{hhline}
 \usepackage{marginnote}
@@ -68,7 +68,7 @@ sorting=none
 \begin{document}
 	
 	\begin{titlepage}
-		\begin{figure}[h]
+		\begin{figure}[H]
 			\hfill
 			\subfigure{\includegraphics[scale=0.04]{uzh}}
 		\end{figure}
@@ -132,27 +132,25 @@ sorting=none
 	
 	This is the report for the K2Pi assignment for the data analysis project. In this report we will document our results and how we derived them.
 	
-	\subsection*{The Experiment}
-	
 	The experiment, which is called K2Pi, analyses the decay of positively charged kaons $K^+$ into one positively charged and one neutral pion ($\pi^+$ and a $\pi^0$), where the lifetime of a $K^+$ can be determined by analysing the data from an earlier experiment called LifeK.
 	
-	\begin{figure}[h] 
+	\begin{figure}[H] 
 		\centering
 		\includegraphics[width=0.75\textwidth]{ExperimentSetup.jpg} 
 		\caption{Experimental setup}
 		\label{fig:1}    
-	\end{figure}
+	\end{figure}	
 	
 	As we can see, we have a collimator which generates a beam of $K^+$ particles. Furthermore, we have two detectors placed at a certain distance from each other along the flight path of the $K^+$. The first detector is called the "Upstream detector" and measures the direction and the momentum of the kaons in the beam. The second detector, called "Downstream detector", is composed of a tracking detector to detect the $\pi^+$ and a calorimeter to measure the $\pi^0$.
 	\\
 	\\
 	However, the pions also have an average lifetime which is given by $\tau_{\pi^+} = 2.6 \cdot 10^{-8}s$. This results in an average decay length of $\beta \gamma c\tau_{\pi^+} = 4.188$km.
 	
-	For the purpose of the project we have been told to assume that the $\pi^0$ is stable and does not decay during the process. We now have to create a simulation of this decay and find the optimum distance between the two detectors in order to capture as many events as possible, where a successful event is considered the detection of both pions corresponding to the same kaon decay. In the first part of the simulation, we will assume a stream that has no spread and moves exactly on the z-axis. For the second part we will add a spread to the stream coming from the collimator following a Gaussian distribution.
+	For the purpose of the project we've been told to assume that the $\pi^0$ is stable and does not decay during the process. We now have to create a simulation of this decay and find the optimum distance between the two detectors in order to capture as many events as possible, where a successful event is considered the detection of both pions corresponding to the same kaon decay. In the first part of the simulation, we will assume a stream that has no spread and moves exactly on the z-axis. For the second part we will add a spread to the stream coming from the collimator following a Gaussian distribution.
 	
 	\clearpage
 	
-	\chapter{Average Decay Length of Kaon}
+	\chapter{Decay Length of $K^+$}
 	
 	In order to estimate the average decay length of the kaon we used the data of an earlier experiment called LifeK, which used the same beam line and the same beam momentum as the K2Pi experiment. In the LifeK experiment, the beam was composed of $84\%$ positively charged pions $\pi^+$ and $16\%$ kaons $K^+$. In total we have $100`000$ measurements of decay lengths of the particles. This means the data from the LifeK experiment corresponds to a convolution of two exponential distributions with the parameters $\tau_{\pi^+}$ and $\tau_{K^+}$, the average decay length of the two particle, and two normalization constants, which correspond to the number of each particle. The probability for a kaon to decay at the point x is given by the following equation.
 	\begin{equation}
@@ -197,14 +195,15 @@ sorting=none
 		\hat{\tau}_{K^+}&=578.x m \\
 		m_{\hat{\tau}}&=2.4 m
 	\end{align*}
-	
-	\begin{figure}[htbp] 
+	{\vskip-3ex}
+	\begin{figure}[H]
 		\centering
 		\includegraphics[width=0.7\textwidth]{hist_tau_estimator3.jpg}
 		\caption{Gaussian distribution of $\hat{\tau}_{K^+}$ estimator}
 		\label{fig:Bild1}
+
 	\end{figure}
-	
+
 	We decided to use the results of the second method because of the following reasons: The uncertainty on the second method is significantly smaller. For the first method we used a predefined function, where we had no transparency on what was computed, whereas with the second method we understood every step. Third, we were not able to explain the change of the independent variables. 
 	
 	\clearpage
@@ -227,13 +226,13 @@ The modulus is also a random variable but follows an exponential distribution wi
 	
 	For the actual $K^+$ decay into pions, we defined a function that simulates the decay in the $K^+$ rest frame and boosts the momentum 4-vectors to the lab frame.
 	First, it creates the direction vector of the $\pi^0$-momentum in the $K^+$ rest frame in standard spherical coordinates where the angle $\theta$ is a random variable, uniformly distributed in a range from 0 to $\pi$ and $\varphi$ is uniformly distributed in a range from 0 to 2$\pi$. 
-	\begin{figure}[htbp] 
+	\begin{figure}[H] 
 		\centering
 		\includegraphics[width=0.75\textwidth]{Frames.png} 
 		\caption{$K^+$ into $\pi^0$ and $\pi^+$ in rest frame and in lab frame}
 		\label{fig:2}    
 	\end{figure}
-\\
+
 From this follows the momentum vector $p^*_{\pi^0}$ of the $\pi^0$ by translating to Cartesian coordinates and multiplying the expected modulus $|p^*_{\pi}|$ of the $\pi$ momentum computed in section \ref{sec:gammabeta}. The corresponding $\pi^+$ momentum vector $p^*_{\pi^+}$ is derived by changing the sign since the pions are assumed to be produced isotropically with back-to-back momentum and from momentum conservation follows that their modulus needs to be equal. 
 	\begin{equation}
 		p^*_{\pi^0} = |p^*_{\pi}| \cdot \begin{bmatrix}
@@ -328,17 +327,17 @@ From this follows the momentum vector $p^*_{\pi^0}$ of the $\pi^0$ by translatin
 	Also, we expected that the difference between the simulation with and without the spread at the collimator should be quite noticeable. The success rate becomes smaller when spreading is enabled and the whole graph gets “shifted” to the right, increasing the optimal distance between the two sensors. 
 	With the multithreaded enabled python script “K2Pi.py”, we could simulate the decay for large $n$ quite easily. The following result was obtained for $n = 100000$ with a spreading of $\sigma_x=\sigma_y=1$ mrad:
 	
-	\begin{figure}[h] 
+	\begin{figure}[H] 
 		\centering
 		\includegraphics[width=0.7\textwidth]{Simulation100kWithSpread.png} 
 		\caption{The different detector positions plotted against the corresponding success rate with a Gaussian deflection}   
 	\end{figure}
 	
 	Where the optimum distance is found to be at 295.8 m with a maximum efficiency of 32.6\%. As one can see, the curve is very flat at its peak and therefore the distance between the two sensors does not need to be very precise. Looking at the graph, in a range of $(290 \pm 50)$ m the variation of the position yields only very small differences in the efficiency of the experiment.
-	
+	\clearpage
 	With spread = 0 and $n = 100000$ we obtain the following result:
 	
-	\begin{figure}[h] 
+	\begin{figure}[H] 
 		\centering
 		\includegraphics[width=0.7\textwidth]{Simulation100kNoSpread.png} 
 		\caption{The different detector positions plotted against the corresponding success rate without deflection}   
@@ -372,35 +371,27 @@ From this follows the momentum vector $p^*_{\pi^0}$ of the $\pi^0$ by translatin
 	\begin{align*}
 		\overrightarrow{p}_{K^+} = \overrightarrow{p}_{\pi^0} + \overrightarrow{p}_{\pi^+} = 0
 	\end{align*}
-	
 	In modulus:
 	\begin{align*}
 		|p^*_{\pi^0}| = |p^*_{\pi^+}| =: |p^*_{\pi}|
-	\end{align*}
-	
+	\end{align*}	
 	The decay obeys the law of energy conservation in the $K^+$ rest frame:
 	\begin{align*}
 		E^*_{K^+} = E^*_{\pi^0} + E^*_{\pi^+}
 	\end{align*}
-	
-	$\Rightarrow$
 	\begin{align*}
-		m_{0K^+}c^2 = \sqrt{|p^*_{\pi}|^2c^2 + m_{0\pi^0}^2c^4} + \sqrt{|p^*_{\pi}|^2c^2 + m_{0\pi^+}^2c^4}
-	\end{align*}
-	
-	Using following rest masses from Wikipedia we found the results:
+	\Rightarrow \quad	m_{0K^+}c^2 = \sqrt{|p^*_{\pi}|^2c^2 + m_{0\pi^0}^2c^4} + \sqrt{|p^*_{\pi}|^2c^2 + m_{0\pi^+}^2c^4}
+	\end{align*}	
+	Using following rest masses from Wikipedia, we found the results:
 	\begin{align*}
 		m_{0\pi^0} = 134.9766 MeV/c^2\\
 		m_{0\pi^+} = 139.5702 MeV/c^2\\
 		m_{0K^+} = 493.677 MeV/c^2
 	\end{align*}
-	
-	For the momentum of the pions we receive:
-	
+	For the momentum of the pions we receive:	
 	\begin{align*}
 		|p^*_{\pi}| = 205.138 MeV/c
-	\end{align*}
-	
+	\end{align*}	
 	The total energy of the pions are calculated by the following formula:
 	\begin{align*}
 		E_{\pi^0}^* = \sqrt{|p^*_{\pi}|^2c^2 + m_{0\pi^0}^2c^4} = 245.5611565 MeV\\
