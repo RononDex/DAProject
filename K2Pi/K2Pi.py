@@ -41,55 +41,55 @@ def SimulateKDecayPoint(sx, sy, tau):
     # Calculate the decay length for the K+ particle (again randomly generated)
     vlen= np.array(stats.expon.rvs(loc=0, scale=tau, size=1))
 
-    # Calculate the x, y and z componnents for the decay point of the K+
+    # Calculate the x, y and z components for the decay point of the K+
     x0= vlen*np.tan(alpha)*np.cos(beta)/np.sqrt(1+np.tan(alpha)**2 *np.cos(beta)**2)                                
     y0= np.sqrt(vlen**2 -(x0**2))*np.sin(beta)                      
     z0= np.sqrt(vlen**2 -(x0**2))*np.cos(beta)
     dp= np.array([x0,y0,z0])                             
     return  dp, alpha, beta
 
-### Simulates a single K2pi decay
+### Simulates a single K2Pi decay
 ### Parameters:
 ###     Simulation constants as defined at the bottom of this script
 def SimulateK2PiDecay(E_K_0, E_K_plus, p, b, g, tau):              
-    # Theta and Phi are uniformly randomly spread between 0 and pi (respectively 0 and 2pi for phi)
+    # Theta and Phi are uniformly randomly distributedspread between 0 and pi (respectively 0 and 2pi for phi)
     theta = np.array(stats.uniform.rvs(scale=np.pi, size=1))        
     phi = np.array(stats.uniform.rvs(scale=2*np.pi, size=1))     
 
-    # Convert to kartesic coordiantes   
+    # Convert to Cartesian coordiantes   
     x0= np.sin(theta)*np.cos(phi)                                   
     y0= np.sin(theta)*np.sin(phi)                                  
     z0= np.cos(theta)   
 
-    # Create the decay vectors from the K+ frame
+    # Create the momentum 4-vectors from in the K+ rest frame
     P_K_0 = np.array([E_K_0,p*x0,p*y0,p*z0])                        
     P_K_plus = np.array([E_K_plus,p*(-x0),p*(-y0),p*(-z0)])
 
-    # Create the decay vectors from the pion lab frame
+    # Boost the momentum 4-vectors to the lab frame
     P_lab_0 = np.dot(LorentzBoost(b,g),P_K_0.T)                     
     P_lab_plus = np.dot(LorentzBoost(b,g),P_K_plus.T)
     return P_lab_0, P_lab_plus                                
 
-### Creates in K-direction rotated vectors
+### Creates the position vector of the decay and the pion momentum vectors rotated to match the Cartesian coordinates of the lab frame
 ### Parameters:
 ###     Simulation constants as defined at the bottom of this script
 def RotateDecayVectors(sx, sy, tau, E_K_0, E_K_plus, p, b, g): 
-    # Rotation angles                
+    # Decay position and rotation angles                
     dp,alpha,beta = SimulateKDecayPoint(sx, sy, tau) 
 
-    # Decay vectors
+    # Pion momentum vectors
     P_lab_0,P_lab_plus = SimulateK2PiDecay(E_K_0, E_K_plus, p, b, g, tau)
     P_lab_0=P_lab_0[1:]
     P_lab_plus=P_lab_plus[1:]    
     
-    # Rotate the vectors
+    # Rotate the vectors to the lab frame coordinates
     P_lab_0r = np.dot(RotationAroundXAxis(beta),np.dot(RotationAroundYAxis(alpha),P_lab_0.T))
     P_lab_plusr = np.dot(RotationAroundXAxis(beta),np.dot(RotationAroundYAxis(alpha),P_lab_plus.T))
 
     # Return the results
     return P_lab_0r, P_lab_plusr, dp
 
-### Simulates N-Decays for a K+ particle
+### Simulates n kaon decays
 ### Paramters:
 ###     All the simulation constants as defined at the bottom of this script
 def SimulateNDecays(sx, sy, tau, E_K_0, E_K_plus, p, b, g, n):        
@@ -108,16 +108,16 @@ def SimulateNDecays(sx, sy, tau, E_K_0, E_K_plus, p, b, g, n):
 
 ### Calculates the distance from the z-axis (from the sensor)
 ### Parameters:
-###     P_lab_0:    Impulse of the neutral pion in the lab frame
-###     P_lab_plus: Impulse of the charged pion in the lab frame
+###     P_lab_0:    Momentum of the neutral pion in the lab frame
+###     P_lab_plus: Momentum of the charged pion in the lab frame
 ###     dp:         decay point
-###     a:          location of detection
+###     a:          detector position
 def HitDistance(P_lab_0, P_lab_plus, dp, a):
     # If behind the detector, return something that is out of its detection range                          
     if float(dp[-1]) >= a:                                              
         return [100,100]
 
-    # If decay is before detector, calculate the distance from the z-axis when it reaches the position of the detector
+    # If decay happens in front of the detector, calculate the distance from the z-axis when it reaches the position of the detector
     else:
         # Find how many times we have to multiply P_lab_0r with dp to get z=a
         n_0 = float((a-dp[-1])/float(P_lab_0[-1]))                      
@@ -127,12 +127,12 @@ def HitDistance(P_lab_0, P_lab_plus, dp, a):
         d_plus = np.sqrt((float(dp[0])+float(n_plus*P_lab_plus[0]))**2+(float(dp[1])+float(n_plus*P_lab_plus[1]))**2)  
         return [d_0, d_plus] 
 
-### Calculates the successrate for a given point in the simulation
+### Calculates the successrate for a given detector position in the simulation
 ### Parameters:
-###     P_lab_0:    Impulse of the neutral pion in the lab frame
-###     P_lab_plus: Impulse of the charged pion in the lab frame
+###     P_lab_0:    Momentum of the neutral pion in the lab frame
+###     P_lab_plus: Momentum of the charged pion in the lab frame
 ###     dp:         decay point
-###     a:          location of detection
+###     a:          detector position
 ###     n:          number of decays, to normalize the result
 def successrate(P_lab_0, P_lab_plus, dp, a, n):
     success = 0
@@ -155,13 +155,13 @@ def GraficEvaluation(a_opt, SR_max, A, SR):
     plt.plot([a_range[0],a_range[1]], [max(SR),max(SR)],'k:')
     plt.plot([a_opt,a_opt], [0,1],'k:')
     plt.xlabel('detector position [m]')
-    plt.ylabel(r'Successrate [success/$n_{K+}$]')
+    plt.ylabel(r'success rate [success/$n_{K+}$]')
     plt.show()
 
 ### Starts a single experiment
 ### Parameters:
 ###     the simulation parameters (see bottom) + the following 2 parameters:
-###     SR: (list where the results of the simulation are written into),    
+###     SR: (list where the results (success rates) of the simulation are written into),    
 ###     i:  (index for SR, which is assigned for this thread, to prevent the threads writing into the same list)
 def RunExperiment(sx, sy, E_K_0, E_K_plus, p, b, g, a_range, tau, n, SR, i):
 
@@ -234,7 +234,7 @@ def RunExperimentMultiThreaded(sx, sy, E_K_0, E_K_plus, p, b, g, a_range, tau, n
             values.append(SR[j][i])
         avgSR[i] = np.mean(values)
 
-    # Find the max success rate and its distance
+    # Find the maximum success rate and its distance
     SR_max = max(avgSR)
     a_opt = 0
     for i in range(len(A)):
