@@ -70,7 +70,7 @@ sorting=none
 	\begin{titlepage}
 		\begin{figure}[H]
 			\hfill
-			\subfigure{\includegraphics[scale=0.04]{uzh}}
+			\subfigure{\includegraphics[scale=0.75]{uzh}}
 		\end{figure}
 		\vspace{1 cm}
 		\textbf{\begin{huge}Data Analysis Project
@@ -154,14 +154,14 @@ sorting=none
 	
 	In order to estimate the average decay length of the kaon we used the data of an earlier experiment called LifeK, which used the same beam line and the same beam momentum as the K2Pi experiment. In the LifeK experiment, the beam was composed of $84\%$ positively charged pions $\pi^+$ and $16\%$ kaons $K^+$. In total we have $100`000$ measurements of decay lengths of the particles. This means the data from the LifeK experiment corresponds to a convolution of two exponential distributions with the parameters $\tau_{\pi^+}$ and $\tau_{K^+}$, the average decay length of the two particle, and two normalization constants, which correspond to the number of each particle. The probability for a kaon to decay at the point x is given by the following equation.
 	\begin{equation}
-		\label{convolutedDistribution}
-		P(x)=  \frac{n_{\pi^+}}{\tau_{\pi^+}} \cdot e^{-x/ \tau_{pi^+}} + \frac{n_{K^+}}{\tau_{K^+}} \cdot e^{-x/ \tau_{K^+}}
+	\label{convolutedDistribution}
+	P(x)=  \frac{n_{\pi^+}}{\tau_{\pi^+}} \cdot e^{-x/ \tau_{pi^+}} + \frac{n_{K^+}}{\tau_{K^+}} \cdot e^{-x/ \tau_{K^+}}
 	\end{equation} 
 	We already know three of those parameters:
 	\begin{align*}
-		n_{\pi^+} &= 84`000 \\
-		n_{K^+} &= 16`000 \\
-		\tau_{\pi^+} &= 4188 m
+	n_{\pi^+} &= 84`000 \\
+	n_{K^+} &= 16`000 \\
+	\tau_{\pi^+} &= 4188 m
 	\end{align*}
 	In order to find the average decay length of the kaon we tried two different methods.\\
 	First, we estimated $\tau_{K^+}$ directly from the given data with the scipy.optimizer.curvefit where we fitted the function given by equation \ref{convolutedDistribution}. We left all four parameters of the equation as independent variables, but initialized them at the expected value, and bound them in reasonable bounds. In order to have an idea what to expect for the average decay length of the kaon, we calculated the average decay length $\tau_{K^+}= \gamma \beta \omega_{K^+}$, where $\beta$ and $\gamma$ are calculated in section \ref{sec:gammabeta} and where  $\omega_{K^+}$ is the average lifetime of the kaon. $\omega_{K^+}$ was already determined by the particle data group\footnote{\url{http://pdg.lbl.gov/2016/listings/rpp2016-list-K-plus-minus.pdf}, Page 2, 2016} and equals  $(1.2379 \pm 0.0021) \times 10^{-8} s $. For the expected decay length value of the kaon we obtain $\tau_{K^+} = 563.7$ m.
@@ -170,7 +170,6 @@ sorting=none
 	
 	This method leads to the following result:\\
 	\begin{tabular}{c|cc}
-		\centering
 		& Estimated Value  & Uncertainty \\ 
 		\hline 
 		$\hat{\tau}_{K^+}$ & 577 m & 6 m \\ 
@@ -187,13 +186,13 @@ sorting=none
 	\\
 	For the second method, to estimate $\tau_{K^+}$, we separated the two exponential distribution using a Monte Carlo method to simplify the fit function. We plotted the data of LifeK in a histogram with 100 bins. We simulated an exponential distribution with a scale of $\tau_{\pi^+}$ and presented the simulated data in a histogram, using the same bins as before. We subtracted the values of the two histograms to get the distribution of the kaon. To estimate the average decay length, we used the Maximum-Likelihood Method. The uncertainty was determined by repeating the Maximum-Likelihood Method N (=1`000) times to calculate the mean value of $\hat{\tau}_{K^+}$. This uncertainty $m_{\tau}$ can thus be determined by using the standard deviation $\sigma_{\hat{\tau}}$.
 	\begin{align*}
-		\hat{\tau}_{K^+}&= \frac{\sum_{i=1}^{100} (x_i \cdot n_i)}{\sum_{i=1}^{100} n_i}\\
-		m_{\hat{\tau}}&= \frac{\sigma_{\hat{\tau}}}{\sqrt{N}}
+	\hat{\tau}_{K^+}&= \frac{\sum_{i=1}^{100} (x_i \cdot n_i)}{\sum_{i=1}^{100} n_i}\\
+	m_{\hat{\tau}}&= \frac{\sigma_{\hat{\tau}}}{\sqrt{N}}
 	\end{align*}
 	The results are:
 	\begin{align*}
-		\hat{\tau}_{K^+}&=578.x m \\
-		m_{\hat{\tau}}&=2.4 m
+	\hat{\tau}_{K^+}&=578.x m \\
+	m_{\hat{\tau}}&=2.4 m
 	\end{align*}
 	{\vskip-3ex}
 	\begin{figure}[H]
@@ -201,9 +200,9 @@ sorting=none
 		\includegraphics[width=0.7\textwidth]{hist_tau_estimator3.jpg}
 		\caption{Gaussian distribution of $\hat{\tau}_{K^+}$ estimator}
 		\label{fig:Bild1}
-
+		
 	\end{figure}
-
+	
 	We decided to use the results of the second method because of the following reasons: The uncertainty on the second method is significantly smaller. For the first method we used a predefined function, where we had no transparency on what was computed, whereas with the second method we understood every step. Third, we were not able to explain the change of the independent variables. 
 	
 	\clearpage
@@ -217,12 +216,12 @@ sorting=none
 	\section{Simulation of the Kaon Decay} \label{sec:kdecay}
 	
 	At first, we defined a function that returns the position vector $P_{decay}$ of one single kaon decay in Cartesian coordinates and its two deflection angles with respect to the z-axis. These angles ($\alpha$ in x-direction and $\beta$ in y-direction) are random variables following a Gaussian distribution with $\mu$ = 0 and $\sigma_x$ = $\sigma_y$ = 1 mrad. With $\alpha$ and $\beta$ the direction of $P_{decay}$ in cartesian coordinates can be calculated by trigonometric coherences:
-\begin{align*}
-x &= \frac{\tan{\alpha} \cdot cos{\beta}}{1+\tan{\alpha}^2 \cdot \cos{\beta}^2}\\
-y &= \sqrt{1-x^2} \cdot \sin{\beta}\\
-z &= \sqrt{1-x^2} \cdot \cos{\beta}\\
-\end{align*}
-The modulus is also a random variable but follows an exponential distribution with $\tau$ = $\tau_{K^+}$, which was derived in the first part of the assignment.
+	\begin{align*}
+	x &= \frac{\tan{\alpha} \cdot cos{\beta}}{1+\tan{\alpha}^2 \cdot \cos{\beta}^2}\\
+	y &= \sqrt{1-x^2} \cdot \sin{\beta}\\
+	z &= \sqrt{1-x^2} \cdot \cos{\beta}\\
+	\end{align*}
+	The modulus is also a random variable but follows an exponential distribution with $\tau$ = $\tau_{K^+}$, which was derived in the first part of the assignment.
 	
 	For the actual $K^+$ decay into pions, we defined a function that simulates the decay in the $K^+$ rest frame and boosts the momentum 4-vectors to the lab frame.
 	First, it creates the direction vector of the $\pi^0$-momentum in the $K^+$ rest frame in standard spherical coordinates where the angle $\theta$ is a random variable, uniformly distributed in a range from 0 to $\pi$ and $\varphi$ is uniformly distributed in a range from 0 to 2$\pi$. 
@@ -232,53 +231,53 @@ The modulus is also a random variable but follows an exponential distribution wi
 		\caption{$K^+$ into $\pi^0$ and $\pi^+$ in rest frame and in lab frame}
 		\label{fig:2}    
 	\end{figure}
-
-From this follows the momentum vector $p^*_{\pi^0}$ of the $\pi^0$ by translating to Cartesian coordinates and multiplying the expected modulus $|p^*_{\pi}|$ of the $\pi$ momentum computed in section \ref{sec:gammabeta}. The corresponding $\pi^+$ momentum vector $p^*_{\pi^+}$ is derived by changing the sign since the pions are assumed to be produced isotropically with back-to-back momentum and from momentum conservation follows that their modulus needs to be equal. 
+	
+	From this follows the momentum vector $p^*_{\pi^0}$ of the $\pi^0$ by translating to Cartesian coordinates and multiplying the expected modulus $|p^*_{\pi}|$ of the $\pi$ momentum computed in section \ref{sec:gammabeta}. The corresponding $\pi^+$ momentum vector $p^*_{\pi^+}$ is derived by changing the sign since the pions are assumed to be produced isotropically with back-to-back momentum and from momentum conservation follows that their modulus needs to be equal. 
 	\begin{equation}
-		p^*_{\pi^0} = |p^*_{\pi}| \cdot \begin{bmatrix}
-			\sin\theta \cdot \cos\varphi \\ \sin\theta \cdot \sin\varphi \\ \cos\theta
-		\end{bmatrix}
-		, \quad \quad p^*_{\pi^+} = -p^*_{\pi^0}
+	p^*_{\pi^0} = |p^*_{\pi}| \cdot \begin{bmatrix}
+	\sin\theta \cdot \cos\varphi \\ \sin\theta \cdot \sin\varphi \\ \cos\theta
+	\end{bmatrix}
+	, \quad \quad p^*_{\pi^+} = -p^*_{\pi^0}
 	\end{equation}
 	The corresponding energy values $E^*_{\pi}$, also computed in section \ref{sec:gammabeta}, are amended in order to represent the data as momentum 4-vectors $P^*_{\pi}$  prevalent in special relativity. These vectors are then boosted to the lab frame by multiplying them with the matrix representation of Lorentz boost in the z'-direction whose $\beta$- and $\gamma$-factors are computed in section \ref{sec:pE}.
 	\begin{equation}
-		P_{\pi} = 
-		\begin{bmatrix}
-			E_{\pi} \\ p_{\pi,x'} \\ p_{\pi,y'} \\ p_{\pi,z'}
-		\end{bmatrix}
-		=
-		\begin{bmatrix}
-			\gamma & 0 & 0 & \beta \gamma \\
-			0 & 1 & 0 & 0 \\
-			0 & 0 & 1 & 0\\
-			\beta \gamma & 0 & 0 & \gamma \\
-		\end{bmatrix}
-		\cdot
-		\begin{bmatrix}
-			E_{\pi}^* \\ p_{\pi,x'}^* \\ p_{\pi,y'}^* \\ p_{\pi,z'}^*
-		\end{bmatrix} = P^*_{\pi}
+	P_{\pi} = 
+	\begin{bmatrix}
+	E_{\pi} \\ p_{\pi,x'} \\ p_{\pi,y'} \\ p_{\pi,z'}
+	\end{bmatrix}
+	=
+	\begin{bmatrix}
+	\gamma & 0 & 0 & \beta \gamma \\
+	0 & 1 & 0 & 0 \\
+	0 & 0 & 1 & 0\\
+	\beta \gamma & 0 & 0 & \gamma \\
+	\end{bmatrix}
+	\cdot
+	\begin{bmatrix}
+	E_{\pi}^* \\ p_{\pi,x'}^* \\ p_{\pi,y'}^* \\ p_{\pi,z'}^*
+	\end{bmatrix} = P^*_{\pi}
 	\end{equation}
 	The z'-axis here corresponds to the direction of the $K^+$-velocity which is only equivalent to the z-axis of the lab frame in case of an idealized non deflected $K^+$-beam. The three momentum components in the x'-, y'-, and z'-direction of the resulting 4-vectors in the lab frame are thus rotated by the angles $\alpha$ around the y-axis and $\beta$ around the x-axis by multiplying them by the corresponding rotation matrices:
 	\begin{equation}
-		\begin{bmatrix}
-			p_{\pi,x} \\ p_{\pi,y} \\ p_{\pi,z}
-		\end{bmatrix}
-		=
-		\begin{bmatrix}
-			1 &   0         & 0           \\
-			0 & \cos \beta & -\sin \beta \\
-			0 & \sin \beta &  \cos \beta
-		\end{bmatrix}
-		\cdot
-		\begin{bmatrix}
-			\cos \alpha  & 0 & \sin \alpha \\
-			0         & 1 &  0          \\
-			-\sin \alpha & 0 & \cos \alpha
-		\end{bmatrix}
-		\cdot
-		\begin{bmatrix}
-			p_{\pi,x'} \\ p_{\pi,y'} \\ p_{\pi,z'}
-		\end{bmatrix}
+	\begin{bmatrix}
+	p_{\pi,x} \\ p_{\pi,y} \\ p_{\pi,z}
+	\end{bmatrix}
+	=
+	\begin{bmatrix}
+	1 &   0         & 0           \\
+	0 & \cos \beta & -\sin \beta \\
+	0 & \sin \beta &  \cos \beta
+	\end{bmatrix}
+	\cdot
+	\begin{bmatrix}
+	\cos \alpha  & 0 & \sin \alpha \\
+	0         & 1 &  0          \\
+	-\sin \alpha & 0 & \cos \alpha
+	\end{bmatrix}
+	\cdot
+	\begin{bmatrix}
+	p_{\pi,x'} \\ p_{\pi,y'} \\ p_{\pi,z'}
+	\end{bmatrix}
 	\end{equation}
 	
 	\clearpage
@@ -288,25 +287,25 @@ From this follows the momentum vector $p^*_{\pi^0}$ of the $\pi^0$ by translatin
 	
 	Knowing the point $P_{decay}=(x_K,y_K,z_K)$  where the kaon decays and the directions $\vec{e}_{\pi^+}=(x_{\pi^+},y_{\pi^+},z_{\pi^+})$ and $\vec{e}_{\pi^0}=(x_{\pi^0},y_{\pi^0},z_{\pi^0})$ in which the pions fly after the decay (derived from the momentum vectors $p_{\pi}$), we can now determine if both $\pi$ are detected by performing a linear combination. The condition is that the z components of the points $P_{detect,\pi^+}$,$P_{detect,\pi^0}$, where the pions are detected, are equal to the z components of the position of our detector, which we call $a$. This leads to the following equations:
 	\begin{align*}
-		a &= z_K + n_{\pi^+} \cdot z_{\pi^+} \\ 
-		a &= z_K + n_{\pi^0} \cdot z_{\pi^0}
+	a &= z_K + n_{\pi^+} \cdot z_{\pi^+} \\ 
+	a &= z_K + n_{\pi^0} \cdot z_{\pi^0}
 	\end{align*} 
 	Solving for $n_{\pi^+}$ and  $n_{\pi^0}$ leads to: 
 	\begin{align*}
-		n_{\pi^+} &= (a-z_1)/z_{\pi^+}\\
-		n_{\pi^0} &= (a-z_1)/z_{\pi^0}
+	n_{\pi^+} &= (a-z_1)/z_{\pi^+}\\
+	n_{\pi^0} &= (a-z_1)/z_{\pi^0}
 	\end{align*}
 	With these $n_{\pi^+}$ and $n_{\pi^0}$ the x and y coordinates of $P_{detect,\pi^+}$ and $P_{detect,\pi^0}$ can be calculated by:
 	\begin{align*}
-		x_{\pi^+} &= x_K+n_{\pi^+} \cdot x_{\pi^+}\\
-		y_{\pi^+} &= y_K+n_{\pi^+} \cdot y_{\pi^+}\\
-		x_{\pi^0} &= x_K+n_{\pi^0} \cdot x_{\pi^0}\\
-		y_{\pi^0} &= y_K+n_{\pi^0} \cdot y_{\pi^0}\\
+	x_{\pi^+} &= x_K+n_{\pi^+} \cdot x_{\pi^+}\\
+	y_{\pi^+} &= y_K+n_{\pi^+} \cdot y_{\pi^+}\\
+	x_{\pi^0} &= x_K+n_{\pi^0} \cdot x_{\pi^0}\\
+	y_{\pi^0} &= y_K+n_{\pi^0} \cdot y_{\pi^0}\\
 	\end{align*}
 	Now the distance to the center of the detector of $P_{detect,\pi^+}$ and $P_{detect,\pi^0}$ can easily be calculated by:
 	\begin{align*}
-		d_{\pi^+} &= \sqrt{x_{\pi^+}^2 + y_{\pi^+}^2}\\
-		d_{\pi^0} &= \sqrt{x_{\pi^0}^2 +  y_{\pi^0}^2} 
+	d_{\pi^+} &= \sqrt{x_{\pi^+}^2 + y_{\pi^+}^2}\\
+	d_{\pi^0} &= \sqrt{x_{\pi^0}^2 +  y_{\pi^0}^2} 
 	\end{align*}
 	Because the detector is radially symmetric around the z-axis with radius $r=2m$, every decay with $d_{\pi^+} \leq r$ and $d_{\pi^0} \leq r$ can be rated as a success. Every decay with at least one of the corresponding pions not detected is rated as a failure. 
 	If the z component of the kaon decay point is greater than $a$ and thus the $K^+$ decays after the detector, the event is obviously also rated as a failure. The fact that also the $\pi^+$ decay after a certain time was neglected, because the decay length $\tau_{\pi^+}$ is very large compared to its travelling distance to the detector.
@@ -358,7 +357,7 @@ From this follows the momentum vector $p^*_{\pi^0}$ of the $\pi^0$ by translatin
 	We are given the momentum of the $K^+$: $p_{K^+} = 75 GeV/c$\\
 	From this we can find the velocity of the $K^+$ by the formula:
 	\begin{align*}
-		p_{K^+} = \gamma \cdot m_{0K^+} \cdot v
+	p_{K^+} = \gamma \cdot m_{0K^+} \cdot v
 	\end{align*}
 	$\Rightarrow$
 	$v/c = \beta = 0.99997834$ ;
@@ -369,33 +368,33 @@ From this follows the momentum vector $p^*_{\pi^0}$ of the $\pi^0$ by translatin
 	The decay products are produced isotropically, so the momenta of the decay products are equal in modulus and are in opposite direction. 
 	So in the $K^+$ rest frame the momenta are conserved:
 	\begin{align*}
-		\overrightarrow{p}_{K^+} = \overrightarrow{p}_{\pi^0} + \overrightarrow{p}_{\pi^+} = 0
+	\overrightarrow{p}_{K^+} = \overrightarrow{p}_{\pi^0} + \overrightarrow{p}_{\pi^+} = 0
 	\end{align*}
 	In modulus:
 	\begin{align*}
-		|p^*_{\pi^0}| = |p^*_{\pi^+}| =: |p^*_{\pi}|
+	|p^*_{\pi^0}| = |p^*_{\pi^+}| =: |p^*_{\pi}|
 	\end{align*}	
 	The decay obeys the law of energy conservation in the $K^+$ rest frame:
 	\begin{align*}
-		E^*_{K^+} = E^*_{\pi^0} + E^*_{\pi^+}
+	E^*_{K^+} = E^*_{\pi^0} + E^*_{\pi^+}
 	\end{align*}
 	\begin{align*}
 	\Rightarrow \quad	m_{0K^+}c^2 = \sqrt{|p^*_{\pi}|^2c^2 + m_{0\pi^0}^2c^4} + \sqrt{|p^*_{\pi}|^2c^2 + m_{0\pi^+}^2c^4}
 	\end{align*}	
-	Using following rest masses from Wikipedia, we found the results:
+	Using following rest masses from the PDG\footnote{\url{http://www-pdg.lbl.gov}}, we found the results:
 	\begin{align*}
-		m_{0\pi^0} = 134.9766 MeV/c^2\\
-		m_{0\pi^+} = 139.5702 MeV/c^2\\
-		m_{0K^+} = 493.677 MeV/c^2
+	m_{0\pi^0} = 134.9766 MeV/c^2\\
+	m_{0\pi^+} = 139.5702 MeV/c^2\\
+	m_{0K^+} = 493.677 MeV/c^2
 	\end{align*}
 	For the momentum of the pions we receive:	
 	\begin{align*}
-		|p^*_{\pi}| = 205.138 MeV/c
+	|p^*_{\pi}| = 205.138 MeV/c
 	\end{align*}	
 	The total energy of the pions are calculated by the following formula:
 	\begin{align*}
-		E_{\pi^0}^* = \sqrt{|p^*_{\pi}|^2c^2 + m_{0\pi^0}^2c^4} = 245.5611565 MeV\\
-		E_{\pi^+}^* = \sqrt{|p^*_{\pi}|^2c^2 + m_{0\pi^+}^2c^4}= 248.115779 MeV
+	E_{\pi^0}^* = \sqrt{|p^*_{\pi}|^2c^2 + m_{0\pi^0}^2c^4} = 245.5611565 MeV\\
+	E_{\pi^+}^* = \sqrt{|p^*_{\pi}|^2c^2 + m_{0\pi^+}^2c^4}= 248.115779 MeV
 	\end{align*}
 	
 	
