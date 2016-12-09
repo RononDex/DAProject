@@ -64,7 +64,7 @@ def startmultithreading(enableMultiThreading,N):
 def runwiththreads(nThread,tau_k_estimator):
     
     for i in range(nThread):
-        dist_pi = stats.expon.rvs(scale=tau_pi, size=int(frac_pi*n))    #exponential distribution with scale==average decay length of pions
+        dist_pi = stats.expon.rvs(scale=tau_pi, size=int(frac_pi*n))    #exponential distribution with scale == average decay length of pions
         n_pi, b = np.histogram(dist_pi, bins=int(bns), range=[min(data),max(data)])
 
         n_k=n_tot-n_pi                          #values of histogram of decay length of kaons
@@ -78,8 +78,8 @@ tau_estimator_liste=startmultithreading(True,N) #List of N average decay length 
 tau_estimator_array=np.array(tau_estimator_liste)
 
 average_decay_length=np.mean(tau_estimator_array) 
-std_k=np.std(tau_estimator_array)               #Standart deviation of distriribution of the tau estimators
-uncertainty_tau=std_k/np.sqrt(N)                #Uncertainity on mean of tau estimators
+std_k=np.std(tau_estimator_array)               #Standard deviation of distriribution of the tau estimtions
+uncertainty_tau=std_k/np.sqrt(N)                #Uncertainity on mean of tau estimations
 
 print(average_decay_length)
 print(uncertainty_tau)
